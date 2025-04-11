@@ -1,0 +1,94 @@
+package com.openclassrooms.mddapi.security.jwt;
+
+
+
+import java.io.IOException;
+
+import org.springframework.lang.NonNull;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter{
+    private final HandlerExceptionResolver handlerExceptionResolver;
+
+    private JwtUtils jwtUtils;
+    private UserDetailsService userDetailsService;
+
+    public JwtAuthenticationFilter(
+        JwtUtils jwtUtils,
+        UserDetailsService userDetailsService,
+        HandlerExceptionResolver handlerExceptionResolver
+    ){
+        this.jwtUtils = jwtUtils;
+        this.userDetailsService = userDetailsService;
+        this.handlerExceptionResolver = handlerExceptionResolver;
+    }
+
+    /**
+     * Filters incoming HTTP requests to authenticate requests based on JWT in the Authorization header.
+     * If a valid JWT is present and the user is not already authenticated, it sets the user authentication
+     * in the SecurityContextHolder.
+     * 
+     * @param request     The HTTP servlet request.
+     * @param response    The HTTP servlet response.
+     * @param filterChain The filter chain to proceed with after authentication.
+     * @throws ServletException If a servlet exception occurs.
+     * @throws IOException      If an I/O exception occurs.
+     */
+    @Override
+    protected void doFilterInternal(
+        @NonNull HttpServletRequest request,
+        @NonNull HttpServletResponse response,
+        @NonNull FilterChain filterChain
+    ) throws ServletException, IOException{
+        final String authHeader = request.getHeader("Authorization"); // get requets header
+
+        if(authHeader == null || !authHeader.startsWith("Bearer ")){
+            filterChain.doFilter(request, response); // pass through filter with no authentication
+            return;
+        }
+        try {
+            final String jwt = authHeader.substring(7); // get token
+            final String userEmail = jwtUtils.extractUsername(jwt); // get email
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); // if already authenticated
+
+            if (userEmail != null && authentication == null) {
+
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail); // load user
+
+                if(jwtUtils.isTokenValid(jwt, userDetails)){
+                    // if token valid create authToken
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                    );
+
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authToken); // setauthToken in context
+                }
+            }
+
+            filterChain.doFilter(request, response); // pass through filter with authentication
+        } catch (Exception exception){
+            System.out.println(exception);
+            handlerExceptionResolver.resolveException(request, response, null, exception);
+        }
+
+    }
+
+}
