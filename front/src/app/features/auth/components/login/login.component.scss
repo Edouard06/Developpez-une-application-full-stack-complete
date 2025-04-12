@@ -1,0 +1,27 @@
+@use 'src/styles/responsive' as *;
+#app-header{
+    display: none;
+    @include sm {
+        display: block;
+    }
+}
+.login,.form-container,.login-form,.card-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.login{
+    height: $height-w-header;
+    .logo{
+        width: 100%;
+        max-width: 450px;
+        display: block;
+        @include sm {
+            display: none;
+        }
+    }
+    .form-container{
+        padding: 1rem;
+    }
+}

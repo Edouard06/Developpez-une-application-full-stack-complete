@@ -1,4 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+@import 'responsive';
+app-root {
+    display: block;
+    height: $header-height;
+  }
+
+  app-details{
+    display: block;
+    height: $header-height;
+  }
+
+html, body { height: 100%; width: 100%;}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
