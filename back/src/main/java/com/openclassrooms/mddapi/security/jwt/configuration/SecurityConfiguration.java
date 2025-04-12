@@ -49,10 +49,12 @@ public class SecurityConfiguration {
         http.csrf((csrf) -> csrf.disable()) // disable csrf (stateless)
         .authorizeHttpRequests((authorizeHttpRequests) ->
             authorizeHttpRequests.requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/images/**").permitAll()
+
             .anyRequest().authenticated()
         ) // request allowed without authentication 
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // session management is stateless
-        .authenticationProvider(authenticationProvider) // set provider
+        .authenticationProvider(authenticationProvider) 
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class); // set filter
 
         return http.build();

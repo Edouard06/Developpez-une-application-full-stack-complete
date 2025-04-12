@@ -3,7 +3,6 @@ package com.openclassrooms.mddapi.models;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -18,8 +17,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,13 +26,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 /**
- * Represents a comment associated with an article.
- * A comment contains the content of the comment, the article it relates to,
- * the user who authored the comment, and timestamps for creation and last update.
+ * Represents a subscription of a user to a specific theme.
+ * A subscription links a user with a theme they are interested in and includes 
+ * a timestamp for when the subscription was created.
  */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "COMMENTS")
+@Table(name = "SUBSCRIPTIONS")
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(of = {"id"})
@@ -43,51 +40,38 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Comment {
+public class Subscription {
 
     /**
-     * Unique identifier for the comment.
+     * Unique identifier for the subscription.
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
-     * Content of the comment.
-     * Must not be null and cannot exceed 2500 characters.
-     */
-    @NotNull
-    @Size(max = 2500)
-    private String content;
-    
-    /**
-     * The article to which this comment belongs.
+     * The theme to which the user is subscribed.
+     * Must not be null.
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id", nullable = false)
+    @JoinColumn(name = "theme_id", nullable = false)
     @JsonManagedReference
-    private Article article;
-    
+    private Theme theme;
+
     /**
-     * The user who authored the comment.
+     * The user who has subscribed to the theme.
+     * Must not be null.
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @JsonManagedReference
-    private User author;
-    
+    private User user;
+
     /**
-     * Date and time when the comment was created.
+     * Date and time when the subscription was created.
      * This field is automatically set by the system and is not updatable.
      */
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
-
-    /**
-     * Date and time when the comment was last updated.
-     */
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }
