@@ -10,6 +10,7 @@ import { SharedModule } from '../shared/shared.module';
 import { CoreModule } from './core/core.module';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { RouterModule } from '@angular/router';
     CoreModule,
     AuthModule,
     SharedModule,
-    RouterModule
+    RouterModule,
+    HttpClientModule,
   ],
   
   bootstrap: [AppComponent],
