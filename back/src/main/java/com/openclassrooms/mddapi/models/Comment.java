@@ -45,48 +45,29 @@ import lombok.experimental.Accessors;
 @ToString
 public class Comment {
 
-    /**
-     * Unique identifier for the comment.
-     */
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    /**
-     * Content of the comment.
-     * Must not be null and cannot exceed 2500 characters.
-     */
     @NotNull
     @Size(max = 2500)
     private String content;
     
-    /**
-     * The article to which this comment belongs.
-     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id", nullable = false)
     @JsonManagedReference
     private Article article;
     
-    /**
-     * The user who authored the comment.
-     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author", nullable = false)
     @JsonManagedReference
     private User author;
     
-    /**
-     * Date and time when the comment was created.
-     * This field is automatically set by the system and is not updatable.
-     */
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    /**
-     * Date and time when the comment was last updated.
-     */
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

@@ -11,10 +11,7 @@ import com.openclassrooms.mddapi.payload.request.LoginRequest;
 import com.openclassrooms.mddapi.payload.request.RegisterRequest;
 import com.openclassrooms.mddapi.repository.UserRepository;
 
-/**
- * Service class for handling authentication and registration of {@link User} entities.
- * Provides methods to authenticate users and register new users.
- */
+
 @Service
 public class AuthenticationService {
 
@@ -27,13 +24,6 @@ public class AuthenticationService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    /**
-     * Authenticates a user based on the provided login credentials.
-     * 
-     * @param input The {@link LoginRequest} containing the user's email and password.
-     * @return The authenticated {@link User} if authentication is successful.
-     * @throws org.springframework.security.core.AuthenticationException if authentication fails.
-     */
     public User authenticate(LoginRequest input) {
         // Perform authentication using the provided email and password
         authenticationManager.authenticate(
@@ -48,14 +38,8 @@ public class AuthenticationService {
                 .orElseThrow(() -> new RuntimeException("User not found")); // Adjust error handling as needed
     }
 
-    /**
-     * Registers a new user with the provided registration details.
-     * 
-     * @param input The {@link RegisterRequest} containing the user's registration details.
-     * @return The newly created {@link User} entity.
-     */
+ 
     public User register(RegisterRequest input) {
-        // Create a new user with the provided details and encoded password
         User user = new User()
             .setUsername(input.getUsername())
             .setEmail(input.getEmail())
