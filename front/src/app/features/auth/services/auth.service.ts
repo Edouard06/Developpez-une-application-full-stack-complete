@@ -4,7 +4,7 @@ import { LoginRequest } from '../interfaces/login-request';
 import { Observable } from 'rxjs';
 import { AuthSuccess } from '../interfaces/auth-success';
 import { RegisterRequest } from '../interfaces/register-request';
-import { User } from 'src/app/core/interfaces/user';
+import { User } from '../../../core/interfaces/user';
 
 @Injectable({
   providedIn: 'root'
