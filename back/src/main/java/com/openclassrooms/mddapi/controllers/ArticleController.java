@@ -25,8 +25,12 @@ import com.openclassrooms.mddapi.services.ArticleService;
 import com.openclassrooms.mddapi.services.ThemeService;
 import com.openclassrooms.mddapi.services.UserService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/api/article")
+// @SecurityRequirement(name = "bearerAuth")
+
 public class ArticleController {
 
     @Autowired
@@ -68,23 +72,20 @@ public class ArticleController {
     }
 
     @PostMapping("/create")
-    public Article createArticle(@RequestBody ArticleRequest request){
-        System.out.println(request);
-        
+    public ArticleDto createArticle(@RequestBody ArticleRequest request) {
         User currentUser = this.userService.getCurrentUser();
-        System.out.println(request.getTheme_id());
         Theme relatedTheme = this.themeService.findById(request.getTheme_id())
-        .orElse(null);
-        System.out.println(request.getTitle());
-        
+                                 .orElse(null);
+    
         Article article = new Article()
-        .setAuthor(currentUser)
-        .setTheme(relatedTheme)
-        .setTitle(request.getTitle())
-        .setContent(request.getContent());
-        
-        
-        System.out.println(request.getContent());
-        return this.articleService.create(article);
+            .setAuthor(currentUser)
+            .setTheme(relatedTheme)
+            .setTitle(request.getTitle())
+            .setContent(request.getContent());
+    
+        Article createdArticle = this.articleService.create(article);
+    
+        return this.articleMapper.toDto(createdArticle); 
     }
+    
 }

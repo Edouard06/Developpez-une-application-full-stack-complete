@@ -23,12 +23,6 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    /**
-     * Constructs a SecurityConfiguration instance with the provided dependencies.
-     * 
-     * @param jwtAuthenticationFilter The JWT authentication filter for authenticating requests.
-     * @param authenticationProvider The authentication provider for handling authentication requests.
-     */
     public SecurityConfiguration(
         JwtAuthenticationFilter jwtAuthenticationFilter,
         AuthenticationProvider authenticationProvider
@@ -37,13 +31,6 @@ public class SecurityConfiguration {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
-    /**
-     * Configures the security filter chain for HTTP requests.
-     * 
-     * @param http The HttpSecurity object to configure.
-     * @return SecurityFilterChain instance configured with specified security settings.
-     * @throws Exception If an error occurs while configuring HttpSecurity.
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf((csrf) -> csrf.disable()) // disable csrf (stateless)
@@ -60,11 +47,7 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    /**
-     * Configures CORS (Cross-Origin Resource Sharing) for the application.
-     * 
-     * @return CorsConfigurationSource instance configured with allowed origins, methods, and headers.
-     */
+  
     @Bean
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
