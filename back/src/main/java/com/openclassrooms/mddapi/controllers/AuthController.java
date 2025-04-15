@@ -32,13 +32,7 @@ public class AuthController {
     @Autowired
     private AuthenticationService authenticationService;
     
-        /**
-         * Registers a new user and generates a JWT token upon successful registration.
-         * 
-         * @param request The {@link RegisterRequest} object containing the user's registration details.
-         * @return ResponseEntity containing an {@link AuthResponse} with the JWT token if registration is successful,
-         *         or a {@link GenericResponse} with an error message if registration fails.
-         */
+       
         @PostMapping("/register")
         public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
             try {
@@ -55,13 +49,7 @@ public class AuthController {
             }
         }
 
-    /**
-     * Authenticates a user and generates a JWT token upon successful login.
-     * 
-     * @param request The {@link LoginRequest} object containing the user's login credentials.
-     * @return ResponseEntity containing an {@link AuthResponse} with the JWT token if authentication is successful,
-     *         or a {@link GenericResponse} with an error message if authentication fails.
-     */
+ 
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@RequestBody LoginRequest request) {
         try {
@@ -78,20 +66,10 @@ public class AuthController {
         }
     }
 
-    /**
-     * Retrieves the details of the currently authenticated user.
-     * 
-     * @return ResponseEntity containing a {@link UserResponse} with the user's details if authenticated,
-     *         or a {@link GenericResponse} with an error message if the user is not authenticated.
-     */
+   
     @GetMapping("/me")
     public ResponseEntity<?> authenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        /*
-            Handle case where user tries to access /me without being authenticated 
-            (Error in terminal when casting `authentication.getPrincipal()` to User class)
-        */ 
         if (authentication == null || !authentication.isAuthenticated() || !(authentication.getPrincipal() instanceof User)) {
             GenericResponse errorResponse = new GenericResponse("Forbidden");
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);

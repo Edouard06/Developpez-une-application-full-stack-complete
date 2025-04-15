@@ -13,12 +13,5 @@ import com.openclassrooms.mddapi.models.User;
  */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-
-    /**
-     * Retrieves a {@link User} entity based on the provided email address.
-     * 
-     * @param email The email address associated with the user.
-     * @return An {@link Optional} containing the {@link User} if found, or an empty {@link Optional} if not.
-     */
     Optional<User> findByEmail(String email);
 }

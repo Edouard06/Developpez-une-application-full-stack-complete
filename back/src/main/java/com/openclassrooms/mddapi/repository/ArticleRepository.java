@@ -14,13 +14,5 @@ import com.openclassrooms.mddapi.models.Article;
  */
 @Repository
 public interface ArticleRepository extends JpaRepository<Article, Integer> {
-
-    /**
-     * Retrieves a list of {@link Article} entities based on the provided theme IDs and sorting order.
-     * 
-     * @param themeIds A list of theme IDs to filter the articles.
-     * @param sort The {@link Sort} object specifying the sort order.
-     * @return A list of {@link Article} entities matching the provided theme IDs and sorting order.
-     */
     List<Article> findByThemeIdIn(List<Integer> themeIds, Sort sort);
 }
