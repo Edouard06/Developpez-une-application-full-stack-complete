@@ -1,0 +1,58 @@
+<div
+    [ngClass]="isDetail?'article-wrapper':'item'"
+>
+    <mat-card
+        *ngIf="article; else noArticle"
+        class="article-item"
+        [ngClass]="isDetail?'details':''"
+        (click)="goToDetail(article.id)"
+    >
+        <mat-card-header>
+            <mat-card-title>{{ article.title | titlecase}}</mat-card-title>
+            <mat-card-subtitle>
+                <span class="date-item">Date: {{article.createdAt | date: 'YYYY/MM/dd'}}</span>
+                <span class="author-item">
+                    Auteur: 
+                    <span *ngIf="user$ | async as user; else notFound">
+                        {{ user.username }}
+                    </span>
+                    <ng-template #notFound>
+                        <span>Inconnu</span>
+                    </ng-template>
+                </span>
+                <span
+                    *ngIf="isDetail && (theme$ | async) as theme;"
+                    class="theme-item"
+                >
+                    Theme: {{ theme.name }}
+                </span>
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <p *ngIf="!isDetail; else noEllipsis" class="article-content" ellipsis>
+                {{ article.content }}
+              </p>
+              <ng-template #noEllipsis>
+                <p class="article-content">
+                  {{ article.content }}
+                </p>
+              </ng-template>
+        </mat-card-content>
+    </mat-card>
+    
+    <div class="section">
+    </div>
+    
+    <div
+        *ngIf="isDetail && article"
+        class="comments-part"
+    >
+        <hr>
+        <app-comment
+            [articleId]="article.id"
+        ></app-comment>
+    </div>
+    <ng-template #noArticle>
+        <p>No article available.</p>
+    </ng-template>
+</div>

@@ -1,0 +1,86 @@
+@import 'responsive';
+:host {
+    height: 100%
+}
+.comments-wrapper{
+    max-height: 250px;
+    display: flex;
+    flex-direction: column;
+    @include xs {
+        max-height: 300px;
+    }
+    @include sm {
+        max-height: 400px;
+    }
+    .title{
+        font-weight: 500;
+        margin-bottom: 0;
+        @include sm {
+            margin-bottom: 1rem;
+        }
+    }
+    .comments-container{
+        margin: 0 0 0.5rem 0;
+        padding: 0.5rem;
+        max-height: 200px;
+        overflow-y: auto;
+        flex-grow: 1;
+        @include sm {
+            margin: 1rem;
+        }
+        .comment{
+            display: flex;
+            flex-direction: column;
+            flex-flow: column-reverse;
+            align-items: flex-end;
+            @include md {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+            .username{
+                margin: 0 1rem 0.5rem;
+                font-weight: 400;
+                @include md {
+                    margin: 0;
+                }
+            }
+            .content{
+                border: 1px solid rgba(73, 72, 72, 0.116);
+                box-shadow: 0 0 0 1px;
+                border-radius: 8px;
+                flex-grow: 1;
+                padding: 1rem;
+                margin: 0 1rem;
+                white-space: pre-line;
+                @include md {
+                    margin: 0 1rem 1rem;
+                }
+            }
+        }
+    }
+    .comment-form{
+        display: flex;
+        align-items: flex-start;
+        .textarea{
+            flex-grow: 1;
+        }
+        .outside{
+            display: none;
+        }
+        .inside{
+            margin-right: 0.5rem;
+        }
+        @include sm {
+            .outside{
+                display: block;
+                margin-top: 1rem;
+            }
+            .inside{
+                display: none;
+            }
+        }
+        .submit-btn{
+            margin-left: 1rem;
+        }
+    }
+}

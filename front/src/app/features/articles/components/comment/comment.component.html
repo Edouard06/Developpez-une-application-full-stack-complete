@@ -1,0 +1,57 @@
+<div 
+*ngIf="comments$ | async as comments; else noComment"
+    class="comments-wrapper"
+>
+    <h3 class="title">Commentaires</h3>
+    <div 
+        *ngIf="comments.length > 0; else noComment"
+        class="comments-container"
+    >
+        <div 
+            *ngFor="let comment of comments"
+            class="comment"
+        >
+            <span class="username">{{ comment.author }}</span>
+            <div class="content">{{comment.content}}</div>
+        </div>
+    </div>
+    <form 
+        class="comment-form"
+        [formGroup]="form" 
+        (ngSubmit)="submit()"
+    >
+        <mat-form-field class="textarea">
+            <textarea 
+                matInput 
+                formControlName="content" 
+                placeholder="Ecrire un commentaire"
+            ></textarea>
+            <button 
+                color="primary"
+                mat-fab
+                matSuffix
+                class="submit-btn inside"
+                [disabled]="form.invalid"
+            >
+                <mat-icon>send</mat-icon>
+            </button>
+        </mat-form-field>
+        <button 
+                color="primary"
+                mat-fab
+                class="submit-btn outside"
+                [disabled]="form.invalid"
+            >
+                <mat-icon>send</mat-icon>
+            </button>
+    </form>
+</div>
+<ng-template
+    #noComment
+>
+    <div 
+        class="comments-container"
+    >
+        Aucun commentaire
+    </div>    
+</ng-template>
