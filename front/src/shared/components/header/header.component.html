@@ -1,1 +1,52 @@
-<p>header works!</p>
+<div id="app-header">
+    <img src="/assets/logo_p6.png" alt="logo" id="header-logo"/>
+
+    <div class="btn-container" *ngIf=" isLogged$ | async ">
+        <a
+            mat-button 
+            color="primary"
+            routerLinkActive="active-link"
+            [routerLink]="['/feed']"
+            class="router-link"
+        >
+            Articles
+        </a>
+        <a 
+            mat-button 
+            color="primary"
+            routerLinkActive="active-link"
+            [routerLink]="['/themes']"
+            class="router-link"
+        >
+            Themes
+        </a>
+        <a 
+            mat-mini-fab 
+            color="primary"
+            [routerLink]="['/profile']"
+            class="profile-link"
+        >
+            <mat-icon>person</mat-icon>
+        </a>
+    </div>
+
+    <button 
+        mat-mini-fab 
+        color="primary"
+        class="button-link"
+        (click)="toggleSidenav()"
+    >
+        <mat-icon>menu</mat-icon>
+    </button>
+</div>
+<div class="back-btn-container">
+    <button 
+        *ngIf="displayBackArrow"
+        mat-icon-button
+        (click)="back()"
+    >
+        <mat-icon>
+            arrow_back
+        </mat-icon>
+    </button>
+</div>

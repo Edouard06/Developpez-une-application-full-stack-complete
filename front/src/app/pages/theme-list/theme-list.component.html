@@ -1,0 +1,8 @@
+<div class="themes-container">
+    <theme-card
+         *ngFor="let theme of (themes$ | async)"
+         [theme]="theme"
+         [isThemePage]="true"
+         class="theme-card"
+    ></theme-card>
+ </div>

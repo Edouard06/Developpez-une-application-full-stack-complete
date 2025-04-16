@@ -14,6 +14,9 @@ import { HomeComponent } from './pages/home/home.component';
 
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { ThemeListComponent } from './pages/theme-list/theme-list.component';
+import { ThemeCardComponent } from '../shared/components/theme-card/theme-card.component';
 
 @NgModule({
   imports: [
@@ -29,6 +32,9 @@ import { AuthInterceptor } from './core/interceptors/auth.interceptor';
   declarations: [
     AppComponent,
     HomeComponent,
+    ProfileComponent,
+    ThemeListComponent,
+    ThemeCardComponent,
   ],
   providers: [
     provideHttpClient(withInterceptorsFromDi()),
