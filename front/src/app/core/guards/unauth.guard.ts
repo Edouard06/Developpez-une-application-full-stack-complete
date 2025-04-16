@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserSessionService } from '../services/user-session-service';
+import { UserSessionService } from '../services/user-session.service';
 
 // The UnauthGuard is an Angular guard that restricts access to certain routes for authenticated users.
 // It checks if the user is logged in by using the UserSessionService and redirects to the feed page if they are.

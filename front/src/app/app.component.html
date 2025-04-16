@@ -1,1 +1,38 @@
-<router-outlet></router-outlet>
+<app-header (sidenavToggle)="onSidenavToggle()"></app-header>
+<mat-sidenav-container class="drawer-menu">
+    <mat-sidenav #sidenav mode="over" position="end">
+        <div class="sidenav-btn-container" (click)="sidenav.toggle()">
+            <div class="link-container">
+                <a
+                    mat-button 
+                    color="primary"
+                    routerLinkActive="active-link"
+                    [routerLink]="['/feed']"
+                    class="router-link"
+                >
+                    Articles
+                </a>
+                <a 
+                    mat-button 
+                    color="primary"
+                    routerLinkActive="active-link"
+                    [routerLink]="['/themes']"
+                    class="router-link"
+                >
+                    Themes
+                </a>
+            </div>
+            <a 
+                mat-mini-fab 
+                color="primary"
+                [routerLink]="['/profile']"
+                class="button-link"
+            >
+                <mat-icon>person</mat-icon>
+            </a>
+        </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

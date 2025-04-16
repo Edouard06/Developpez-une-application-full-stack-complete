@@ -6,10 +6,6 @@
  */
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-// Angular Material modules
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,13 +15,23 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-
-// Third-party modules
-import { EllipsisModule } from 'ngx-ellipsis'; // Ensure this is the correct package and properly installed
-
-// Components
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './components/header/header.component';
+import { RouterModule } from '@angular/router';
+import { EllipsisModule } from 'ngx-ellipsis';
 import { ThemeCardComponent } from './components/theme-card/theme-card.component';
+
+const materialModules = [
+  MatGridListModule,
+  MatCardModule,
+  MatButtonModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatIconModule,
+  MatSelectModule,
+  MatSidenavModule,
+  MatSnackBarModule
+];
 
 @NgModule({
   declarations: [
@@ -33,40 +39,21 @@ import { ThemeCardComponent } from './components/theme-card/theme-card.component
     ThemeCardComponent
   ],
   imports: [
-    CommonModule,
     RouterModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     EllipsisModule,
-
-    MatGridListModule,
-    MatCardModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatSnackBarModule
+    ...materialModules
   ],
   exports: [
     CommonModule,
-    RouterModule,
     FormsModule,
     ReactiveFormsModule,
-    EllipsisModule,
     HeaderComponent,
+    EllipsisModule,
     ThemeCardComponent,
-
-    MatGridListModule,
-    MatCardModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatIconModule,
-    MatSidenavModule,
-    MatSnackBarModule
-  ]
+    ...materialModules
+  ],
 })
-export class SharedModule {}
+export class SharedModule { }

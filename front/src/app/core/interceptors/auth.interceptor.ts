@@ -3,7 +3,7 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserSessionService } from '../services/user-session.service';
 
 @Injectable()
@@ -22,8 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
           this.router.navigate(['/']);
           this.matSnackBar.open("Session expirée", "Close", { duration: 3000 });
         }
-        return throwError(error);
-      })
+        return throwError(() => error);      })
     );
   }
 }

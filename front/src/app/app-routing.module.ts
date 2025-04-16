@@ -1,26 +1,51 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
-import { AuthGuard } from './guards/auth.guard';
-import { UnauthGuard } from './guards/unauth.guard';
+import { UnauthGuard } from './core/guards/unauth.guard';
+import { AuthGuard } from './core/guards/auth.guard';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { ListComponent } from './pages/theme-list/theme-list.component';
 
+/**
+ * Defines the routing configuration for the application.
+ * 
+ * @remarks
+ * This module configures the application's routes, including lazy-loaded
+ * modules and guards to control access to different routes based on the 
+ * user's authentication state.
+ * 
+ * @module
+ */
 const routes: Routes = [
+  { 
+    canActivate: [UnauthGuard],
+    path: '', 
+    component: HomeComponent 
+  },
   {
+    canActivate: [UnauthGuard],
     path: '',
-    component: HomeComponent,
-    canActivate: [UnauthGuard] 
+    loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule)
   },
   {
-    path: 'auth',
-    loadChildren: () =>
-      import('./features/auth/auth.module').then((m) => m.AuthModule),
-    canActivate: [UnauthGuard] 
+    canActivate: [AuthGuard],
+    path: 'themes',
+    component: ListComponent,
   },
-
+  {
+    canActivate: [AuthGuard],
+    path: 'feed',
+    loadChildren: () => import('./features/articles/articles.modules').then(m => m.ArticlesModule)
+  },
+  {
+    canActivate: [AuthGuard],
+    path: 'profile',
+    component: ProfileComponent
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

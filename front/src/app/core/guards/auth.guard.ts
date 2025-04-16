@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserSessionService } from '../services/user-session-service';
+import { UserSessionService } from '../services/user-session.service';
 
 // The AuthGuard is an Angular guard that restricts access to certain routes based on the user's authentication status.
 // It checks if the user is logged in by using the UserSessionService and redirects to the home page if not.

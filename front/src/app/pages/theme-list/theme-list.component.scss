@@ -1,0 +1,14 @@
+@import 'responsive';
+.themes-container{
+    margin: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    .theme-card{
+        flex-basis: 100%;
+        @include md {
+            flex-basis: calc(50% - 1rem);
+        }
+    }
+}

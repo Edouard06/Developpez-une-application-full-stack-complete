@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Subscription } from '../interfaces/subscription';
@@ -15,8 +15,9 @@ export class SubscriptionService {
 
   private pathService: string = "api/subscription";
 
-  constructor(private httpClient: HttpClient) { }
-
+  constructor(
+    private httpClient: HttpClient
+  ) {}
   public subscribe(request: SubscriptionRequest): Observable<GenericResponse> {
     return this.httpClient.post<GenericResponse>(`${this.pathService}/subscribe`, request);
   }

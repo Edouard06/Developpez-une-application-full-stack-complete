@@ -1,0 +1,41 @@
+@import 'responsive';
+
+#app-header{
+    height: $header-height;
+    border-bottom: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    #header-logo{
+        height: 100%;
+    }
+    .btn-container{
+        justify-content: center;
+        align-items: center;
+        display: none;
+        @include md {
+            display: flex;
+        }
+        .profile-link{
+            margin-right: 1rem;
+        }
+        .router-link{
+            color: black;
+        }
+        .active-link{
+            color: var(--mdc-text-button-label-text-color);
+        }
+    }
+    .button-link{
+        margin-right: 1rem;
+        position: relative;
+        @include md {
+            display: none;
+        }
+    }
+}
+.back-btn-container{
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+}

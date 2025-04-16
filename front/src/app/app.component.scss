@@ -1,0 +1,30 @@
+@import 'responsive';
+.drawer-menu{
+    position: absolute;
+    top: $header-height;
+    height:calc(100vh - $header-height);
+    width: 100vw;
+    background-color: transparent;
+    .mat-drawer{
+        .sidenav-btn-container{
+            background-color: white;
+            height: calc(100vh - ($header-height + 2.5rem));
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+            justify-content: space-between;
+            padding: 2rem 2rem 0;
+            .link-container{
+                display: flex;
+                flex-direction: column;
+                width: 200px;
+                .router-link{
+                    color: black;
+                }
+                .active-link{
+                    color: var(--mdc-text-button-label-text-color);
+                }
+            }
+        }
+    }
+}
