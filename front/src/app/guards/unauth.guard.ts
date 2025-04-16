@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { UserSessionService } from '../services/user-session-service';
 
 // The UnauthGuard is an Angular guard that restricts access to certain routes for authenticated users.
@@ -8,7 +8,7 @@ import { UserSessionService } from '../services/user-session-service';
 
 
 @Injectable({ providedIn: 'root' })
-export class UnauthGuard implements CanActivate {
+export class UnauthGuard  {
 
 
   constructor(
