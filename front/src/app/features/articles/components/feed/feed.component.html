@@ -1,0 +1,49 @@
+<div class="articles-wrapper">
+    <div class="page-header">
+        <button 
+            mat-raised-button 
+            color="primary"
+            (click)="goToForm()"
+        >
+            Créer un article
+        </button>
+        <span class="sort-button" (click)="updateOrder()">
+            Trier par
+            <button 
+                *ngIf="sortOrder == 'desc'; else orderAsc"
+                mat-icon-button
+                
+            >
+                <mat-icon>
+                    arrow_downward
+                </mat-icon>
+            </button>
+            <ng-template
+                #orderAsc
+            >
+                <button 
+                    mat-icon-button
+                >
+                    <mat-icon
+                        
+                    >
+                        arrow_upward
+                    </mat-icon>
+                </button>
+            </ng-template>
+        </span>
+    </div>
+    <div
+        class="articles-container"
+    >
+        <div *ngIf="(articles$ | async)?.length === 0" class="no-articles-message">
+            Abonnez-vous à un thèmes pour en voir les articles.
+        </div>
+        <article-card
+            *ngFor="let article of (articles$ | async)"
+            [article]="article"
+            [isDetail]="false"
+            class="article-card"
+        ></article-card>
+    </div>
+</div>

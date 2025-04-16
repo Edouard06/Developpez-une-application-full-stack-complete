@@ -1,33 +1,39 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
-
 import { AppRoutingModule } from './app-routing.module';
+import { CoreModule } from './core/core.module';
+import { AuthModule } from './features/auth/auth.module';
+import { SharedModule } from '../shared/shared.module';
+import { ArticlesModule } from './features/articles/articles.modules';
+import { MatButtonModule } from '@angular/material/button';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+
 import { AppComponent } from './app.component';
 import { HomeComponent } from './pages/home/home.component';
 
-import { AuthModule } from './features/auth/auth.module';
-import { ArticlesModule } from './features/articles/articles.modules';
-import { CoreModule } from './core/core.module';
-import { SharedModule } from '../shared/shared.module';
+import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent
-  ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
-    HttpClientModule,
-    RouterModule,
+    AppRoutingModule,
     CoreModule,
-    SharedModule,
     AuthModule,
-    ArticlesModule 
+    SharedModule,
+    ArticlesModule,
+    MatButtonModule,
+  ],
+  declarations: [
+    AppComponent,
+    HomeComponent,
+  ],
+  providers: [
+    provideHttpClient(withInterceptorsFromDi()),
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
 })

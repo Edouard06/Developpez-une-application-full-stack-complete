@@ -6,6 +6,7 @@ import { FormComponent } from './components/form/form.component';
 import { ArticleCardComponent } from './components/article-card/article-card.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { FeedComponent } from './components/feed/feed.component';
 
 @NgModule({
   imports: [
@@ -13,6 +14,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
     ArticlesRoutingModule
   ],
   declarations: [
+    FeedComponent,
     DetailsComponent,
     FormComponent,
     CommentComponent,

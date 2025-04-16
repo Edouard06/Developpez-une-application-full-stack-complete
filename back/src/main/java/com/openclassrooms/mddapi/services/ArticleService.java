@@ -37,11 +37,11 @@ public class ArticleService {
         List<SubscriptionResponse> subscriptions = this.subscriptionService.getCurrentUserSubscriptions();
         List<Integer> themeIds = subscriptions.stream()
                 .map(SubscriptionResponse::getTheme_id)
-                .collect(Collectors.toList());
+                .toList();
 
         List<Article> articles = this.articleRepository.findByThemeIdIn(themeIds, sort);
         return articles.stream()
                        .map(articleMapper::toDto)
-                       .collect(Collectors.toList());
+                       .toList();
     }
 }
