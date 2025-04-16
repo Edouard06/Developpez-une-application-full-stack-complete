@@ -12,7 +12,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { EllipsisModule } from 'ngx-ellipsis';
+import { EllipsisModule } from 'ngx-ellipsis/lib/ellipsis.module';
 
 import { HeaderComponent } from './components/header/header.component';
 
