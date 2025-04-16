@@ -6,7 +6,7 @@ import { CoreModule } from './core/core.module';
 import { AuthModule } from './features/auth/auth.module';
 import { SharedModule } from '../shared/shared.module';
 import { ArticlesModule } from './features/articles/articles.modules';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 import { AppComponent } from './app.component';

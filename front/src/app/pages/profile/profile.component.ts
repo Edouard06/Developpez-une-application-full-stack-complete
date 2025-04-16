@@ -10,7 +10,7 @@ import { Theme } from 'src/app/features/articles/interfaces/theme';
 import { ThemeService } from 'src/app/core/services/theme.service';
 import { AuthService } from 'src/app/features/auth/services/auth.service';
 import { SubscriptionService } from 'src/app/core/services/subscription.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 
 @Component({
   selector: 'app-profile',

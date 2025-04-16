@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable, of, map } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { SubscriptionService } from 'src/app/core/services/subscription.service';
 import { Theme } from '../../../app/features/articles/interfaces/theme';
 import { SubscriptionRequest } from 'src/app/core/interfaces/subscription-request';
