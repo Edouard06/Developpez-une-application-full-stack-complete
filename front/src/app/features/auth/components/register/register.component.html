@@ -1,45 +1,76 @@
 <div class="register" fxLayout="row" fxLayoutAlign="center center">
-    <img src="/assets/logo_p6.png" alt="logo" class="logo"/>
+    <img src="/assets/logo_p6.png" alt="logo" class="logo" />
     <mat-card class="form-container">
-        <mat-card-header fxLayoutAlign="center center">
-            <mat-card-title>Inscription</mat-card-title>
-        </mat-card-header>
-        <form 
-            class="register-form" 
-            [formGroup]="form" 
-            (ngSubmit)="submit()"
+      <mat-card-header fxLayoutAlign="center center">
+        <mat-card-title>Inscription</mat-card-title>
+      </mat-card-header>
+  
+      <form 
+        class="register-form" 
+        [formGroup]="form" 
+        (ngSubmit)="submit()"
+      >
+        <mat-card-content fxLayout="column" class="card-content">
+          <mat-form-field fxFlex>
+            <input 
+              matInput 
+              placeholder="Nom d'utilisateur"
+              formControlName="username"
+            />
+            <mat-error *ngIf="form.get('username')?.hasError('required')">
+              Le nom d'utilisateur est requis.
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field fxFlex>
+            <input 
+              matInput 
+              placeholder="Adresse e-mail"
+              formControlName="email"
+            />
+            <mat-error *ngIf="form.get('email')?.hasError('required')">
+              L'adresse e-mail est requise.
+            </mat-error>
+            <mat-error *ngIf="form.get('email')?.hasError('email')">
+              Format d'email invalide.
+            </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field fxFlex>
+            <input 
+              matInput 
+              type="password" 
+              placeholder="Mot de passe"
+              formControlName="password"
+            />
+            <mat-error *ngIf="form.get('password')?.hasError('required')">
+              Le mot de passe est requis.
+            </mat-error>
+            <mat-error *ngIf="form.get('password')?.hasError('pattern') && form.get('password')?.touched">
+              Le mot de passe doit contenir:
+              <ul>
+                <br>
+                <br>
+                <li>8 caractères</li>
+                <li>1 majuscule</li>
+                <li>1 minuscule</li>
+                <li>1 chiffre</li>
+                <li>1 caractère spécial (&#64;$!%*?&)</li>
+                
+              </ul>
+            </mat-error>
+          </mat-form-field>
+        </mat-card-content>
+  
+        <button 
+          mat-raised-button 
+          color="primary" 
+          type="submit" 
+          [disabled]="form.invalid"
         >
-            <mat-card-content fxLayout="column" class="card-content">
-                <mat-form-field fxFlex>
-                    <input 
-                        matInput 
-                        placeholder="Nom d'utilisateur"
-                        formControlName="username"
-                    >
-                </mat-form-field>
-                <mat-form-field fxFlex>
-                    <input 
-                        matInput 
-                        placeholder="Adresse e-mail"
-                        formControlName="email"
-                    >
-                </mat-form-field>
-                <mat-form-field fxFlex>
-                    <input 
-                        matInput type="password" 
-                        placeholder="Mot de passe"
-                        formControlName="password"
-                    >
-                </mat-form-field>
-            </mat-card-content>
-            <button 
-                mat-raised-button 
-                color="primary" 
-                type="submit" 
-                [disabled]="form.invalid"
-            >
-                S'inscrire
-            </button>
-        </form>
+          S'inscrire
+        </button>
+      </form>
     </mat-card>
-</div>
+  </div>
+  

@@ -19,7 +19,11 @@ export class FeedComponent {
   ) {}
 
   public goToForm(): void {
-    this.router.navigate(["/create"]);
+    this.router.navigate(["/feed/form"]);
+  }
+
+  public goToDetails(id: number): void {
+    this.router.navigate([`/feed/${id}`]);
   }
 
   public updateOrder(): void {

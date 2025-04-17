@@ -4,17 +4,14 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import com.openclassrooms.mddapi.payload.request.UserRequest;
 import com.openclassrooms.mddapi.payload.response.GenericResponse;
 import com.openclassrooms.mddapi.payload.response.UserResponse;
 import com.openclassrooms.mddapi.services.UserService;
+import com.openclassrooms.mddapi.models.UserEntity;
 
 /**
  * Controller for managing user information.
@@ -25,9 +22,11 @@ import com.openclassrooms.mddapi.services.UserService;
 public class UserController {
 
     private final UserService userService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, BCryptPasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/{id}")
@@ -44,7 +43,24 @@ public class UserController {
     @PutMapping("/")
     public ResponseEntity<?> updateUser(@RequestBody UserRequest request) {
         try {
+            Optional<UserEntity> optionalUser = userService.findById(request.getId());
+
+            if (optionalUser.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                     .body(new GenericResponse("Utilisateur introuvable"));
+            }
+
+            UserEntity user = optionalUser.get();
+
+            user.setUsername(request.getUsername());
+            user.setEmail(request.getEmail());
+
+            if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+                user.setPassword(passwordEncoder.encode(request.getPassword()));
+            }
+
             userService.updateUser(request);
+
             return ResponseEntity.ok(new GenericResponse("Utilisateur modifié"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

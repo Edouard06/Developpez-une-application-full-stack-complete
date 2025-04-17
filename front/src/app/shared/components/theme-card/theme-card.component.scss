@@ -1,17 +1,30 @@
 @import 'responsive';
-.theme-card{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    .mat-mdc-card-content{
-        height: inherit;
-        max-height: 100px;
-        .theme-content{
-            height: inherit;
-            max-height: 100px;
-            white-space:pre-wrap;
-        }
+
+.theme-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+
+  .mat-mdc-card-content {
+    height: inherit;
+    max-height: 100px;
+
+    .theme-content {
+      height: inherit;
+      max-height: 100px;
+      white-space: pre-wrap;
     }
+  }
+}
+
+.already-subscribed {
+  background-color: #e0e0e0 !important;
+  color: #555 !important;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #d5d5d5 !important;
+  }
 }

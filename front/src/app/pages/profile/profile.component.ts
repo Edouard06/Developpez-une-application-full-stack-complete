@@ -21,8 +21,10 @@ export class ProfileComponent implements OnInit {
   public form = this.builder.group({
     username: ['', [Validators.required]],
     email: ['', [Validators.required]],
+    password: [''], 
     id: [0, [Validators.required]],
   });
+
   public user$!: Observable<User>;
   public subscriptionsWithThemes$!: Observable<(Subscription & { theme?: Theme })[]>;
 
@@ -70,7 +72,9 @@ export class ProfileComponent implements OnInit {
       username: this.form.value.username as string,
       email: this.form.value.email as string,
       id: this.form.value.id as number,
+      ...(this.form.value.password ? { password: this.form.value.password } : {})
     };
+
     this.userService.update(request).subscribe((response) => {
       this.matSnackBar.open(response.message, 'Close', { duration: 3000 });
     });
