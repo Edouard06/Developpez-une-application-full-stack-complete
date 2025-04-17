@@ -1,26 +1,23 @@
 package com.openclassrooms.mddapi.services;
-
-import com.openclassrooms.mddapi.models.Theme;
-import com.openclassrooms.mddapi.repository.ThemeRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.openclassrooms.mddapi.models.ThemeEntity;
+import com.openclassrooms.mddapi.repository.ThemeRepository;
+
 
 @Service
 public class ThemeService {
 
-    private final ThemeRepository themeRepository;
+    @Autowired
+    private ThemeRepository themeRepository;
 
-    public ThemeService(ThemeRepository themeRepository) {
-        this.themeRepository = themeRepository;
+    public List<ThemeEntity> findAll() {
+        return this.themeRepository.findAll();
     }
 
-    public List<Theme> findAll() {
-        return themeRepository.findAll();
-    }
-
-    public Optional<Theme> findById(Integer id) {
-        return themeRepository.findById(id);
+    public Optional<ThemeEntity> findById(Integer id) {
+        return this.themeRepository.findById(id);
     }
 }

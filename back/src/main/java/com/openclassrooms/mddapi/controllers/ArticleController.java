@@ -2,9 +2,9 @@ package com.openclassrooms.mddapi.controllers;
 
 import com.openclassrooms.mddapi.dto.ArticleDto;
 import com.openclassrooms.mddapi.mapper.ArticleMapper;
-import com.openclassrooms.mddapi.models.Article;
-import com.openclassrooms.mddapi.models.Theme;
-import com.openclassrooms.mddapi.models.User;
+import com.openclassrooms.mddapi.models.ArticleEntity;
+import com.openclassrooms.mddapi.models.ThemeEntity;
+import com.openclassrooms.mddapi.models.UserEntity;
 import com.openclassrooms.mddapi.payload.request.ArticleRequest;
 import com.openclassrooms.mddapi.services.ArticleService;
 import com.openclassrooms.mddapi.services.ThemeService;
@@ -33,12 +33,12 @@ public class ArticleController {
     private ArticleMapper articleMapper;
 
     @PostMapping("/create")
-    public Article createArticle(@RequestBody ArticleRequest request) {
-        User currentUser = this.userService.getCurrentUser();
-        Theme relatedTheme = this.themeService.findById(request.getTheme_id())
+    public ArticleEntity createArticle(@RequestBody ArticleRequest request) {
+        UserEntity currentUser = this.userService.getCurrentUser();
+        ThemeEntity relatedTheme = this.themeService.findById(request.getTheme_id())
                 .orElse(null);
 
-        Article article = new Article()
+        ArticleEntity article = new ArticleEntity()
                 .setAuthor(currentUser)
                 .setTheme(relatedTheme)
                 .setTitle(request.getTitle())
@@ -60,7 +60,7 @@ public class ArticleController {
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") String id) {
         try {
-            Article article = this.articleService.findById(Integer.parseInt(id));
+            ArticleEntity article = this.articleService.findById(Integer.parseInt(id));
             return ResponseEntity.ok().body(articleMapper.toDto(article));
         } catch (NumberFormatException e) {
             return ResponseEntity.badRequest().build();

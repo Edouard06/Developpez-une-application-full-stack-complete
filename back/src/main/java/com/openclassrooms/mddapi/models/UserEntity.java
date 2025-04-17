@@ -44,7 +44,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class User implements UserDetails {
+public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -71,17 +71,17 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     @JsonBackReference
-    private Set<Article> articles = new HashSet<>();
+    private Set<ArticleEntity> articles = new HashSet<>();
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     @JsonBackReference
-    private Set<Comment> comments = new HashSet<>();
+    private Set<CommentEntity> comments = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
     @JsonBackReference
-    private Set<Subscription> subscriptions = new HashSet<>();
+    private Set<SubscriptionEntity> subscriptions = new HashSet<>();
 
     @Override
     public String getUsername() {

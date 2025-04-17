@@ -1,10 +1,12 @@
 package com.openclassrooms.mddapi.services;
 
-import com.openclassrooms.mddapi.dto.CommentDto;
-import com.openclassrooms.mddapi.models.Comment;
-import com.openclassrooms.mddapi.repository.CommentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import com.openclassrooms.mddapi.dto.CommentDto;
+import com.openclassrooms.mddapi.models.CommentEntity;
+import com.openclassrooms.mddapi.repository.CommentRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,23 +14,21 @@ import java.util.stream.Collectors;
 @Service
 public class CommentService {
 
-    private final CommentRepository commentRepository;
-
-    public CommentService(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
-    }
+    @Autowired
+    private CommentRepository commentRepository;
 
     public List<CommentDto> getCommentsByArticleId(Integer articleId, Sort sort) {
-        return commentRepository.findByArticleId(articleId, sort).stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        List<CommentEntity> comments = commentRepository.findByArticleId(articleId, sort);
+        return comments.stream()
+                       .map(this::convertToDTO)
+                       .collect(Collectors.toList());
     }
 
-    public Comment addComment(Comment comment) {
-        return commentRepository.save(comment);
+    public CommentEntity addComment(CommentEntity comment) {
+        return this.commentRepository.save(comment);
     }
 
-    private CommentDto convertToDTO(Comment comment) {
+    private CommentDto convertToDTO(CommentEntity comment) {
         CommentDto dto = new CommentDto();
         dto.setId(comment.getId());
         dto.setAuthor(comment.getAuthor().getDisplayUsername());

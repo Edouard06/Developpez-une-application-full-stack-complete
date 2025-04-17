@@ -1,6 +1,6 @@
 package com.openclassrooms.mddapi.mapper;
 
-import com.openclassrooms.mddapi.models.User;
+import com.openclassrooms.mddapi.models.UserEntity;
 import com.openclassrooms.mddapi.payload.response.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -12,5 +12,5 @@ public interface UserResponseMapper {
     UserResponseMapper INSTANCE = Mappers.getMapper(UserResponseMapper.class);
 
     @Mapping(source = "displayUsername", target = "username")
-    UserResponse toUserResponse(User user);
+    UserResponse toUserResponse(UserEntity user);
 }
