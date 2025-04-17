@@ -1,12 +1,10 @@
 package com.openclassrooms.mddapi.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
 import com.openclassrooms.mddapi.dto.CommentDto;
 import com.openclassrooms.mddapi.models.Comment;
 import com.openclassrooms.mddapi.repository.CommentRepository;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,18 +12,20 @@ import java.util.stream.Collectors;
 @Service
 public class CommentService {
 
-    @Autowired
-    private CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
+
+    public CommentService(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
+    }
 
     public List<CommentDto> getCommentsByArticleId(Integer articleId, Sort sort) {
-        List<Comment> comments = commentRepository.findByArticleId(articleId, sort);
-        return comments.stream()
-                       .map(this::convertToDTO)
-                       .collect(Collectors.toList());
+        return commentRepository.findByArticleId(articleId, sort).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     public Comment addComment(Comment comment) {
-        return this.commentRepository.save(comment);
+        return commentRepository.save(comment);
     }
 
     private CommentDto convertToDTO(Comment comment) {

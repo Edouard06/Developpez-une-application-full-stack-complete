@@ -2,7 +2,6 @@ package com.openclassrooms.mddapi.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,39 +23,35 @@ import com.openclassrooms.mddapi.services.SubscriptionService;
 @RequestMapping("api/subscription")
 public class SubscriptionController {
 
-    @Autowired
-    private SubscriptionService subscriptionService;
+    private final SubscriptionService subscriptionService;
 
-   
+    public SubscriptionController(SubscriptionService subscriptionService) {
+        this.subscriptionService = subscriptionService;
+    }
+
     @GetMapping("/")
     public ResponseEntity<List<SubscriptionResponse>> getCurrentUserSubscriptions() {
-        List<SubscriptionResponse> subscriptions = this.subscriptionService.getCurrentUserSubscriptions();
+        List<SubscriptionResponse> subscriptions = subscriptionService.getCurrentUserSubscriptions();
         return ResponseEntity.ok(subscriptions);
     }
 
-   
     @PostMapping("/subscribe")
     public ResponseEntity<GenericResponse> subscribe(@RequestBody SubscriptionRequest request) {
         try {
-            this.subscriptionService.subscribe(request);
-            GenericResponse response = new GenericResponse("Vous vous êtes abonné");
-            return ResponseEntity.ok(response);
+            subscriptionService.subscribe(request);
+            return ResponseEntity.ok(new GenericResponse("Vous vous êtes abonné"));
         } catch (Exception e) {
-            GenericResponse response = new GenericResponse("Erreur: " + e.getMessage());
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(new GenericResponse("Erreur: " + e.getMessage()));
         }
     }
 
-    
     @PostMapping("/unsubscribe")
     public ResponseEntity<GenericResponse> unsubscribe(@RequestBody UnsubscriptionRequest request) {
         try {
-            this.subscriptionService.unsubscribe(request);
-            GenericResponse response = new GenericResponse("Vous vous êtes désabonné");
-            return ResponseEntity.ok(response);
+            subscriptionService.unsubscribe(request);
+            return ResponseEntity.ok(new GenericResponse("Vous vous êtes désabonné"));
         } catch (Exception e) {
-            GenericResponse response = new GenericResponse("Erreur: " + e.getMessage());
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(new GenericResponse("Erreur: " + e.getMessage()));
         }
     }
 }

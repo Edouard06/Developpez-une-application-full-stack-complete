@@ -7,8 +7,6 @@ import com.openclassrooms.mddapi.payload.request.SubscriptionRequest;
 import com.openclassrooms.mddapi.payload.request.UnsubscriptionRequest;
 import com.openclassrooms.mddapi.payload.response.SubscriptionResponse;
 import com.openclassrooms.mddapi.repository.SubscriptionRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,16 +15,19 @@ import java.util.stream.Collectors;
 @Service
 public class SubscriptionService {
 
-    @Autowired
-    private SubscriptionRepository subscriptionRepository;
+    private final SubscriptionRepository subscriptionRepository;
+    private final UserService userService;
+    private final ThemeService themeService;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ThemeService themeService;
-
-    private User currentUser;
+    public SubscriptionService(
+        SubscriptionRepository subscriptionRepository,
+        UserService userService,
+        ThemeService themeService
+    ) {
+        this.subscriptionRepository = subscriptionRepository;
+        this.userService = userService;
+        this.themeService = themeService;
+    }
 
     public SubscriptionResponse convertToResponse(Subscription subscription) {
         SubscriptionResponse response = new SubscriptionResponse();
@@ -38,26 +39,23 @@ public class SubscriptionService {
     }
 
     public List<SubscriptionResponse> getCurrentUserSubscriptions() {
-        currentUser = this.userService.getCurrentUser();
-        List<Subscription> subscriptions = this.subscriptionRepository.findByUserId(currentUser.getId());
-        return subscriptions.stream()
-                            .map(this::convertToResponse)
-                            .collect(Collectors.toList());
+        User currentUser = userService.getCurrentUser();
+        return subscriptionRepository.findByUserId(currentUser.getId()).stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
     }
 
     public Subscription subscribe(SubscriptionRequest request) {
-        currentUser = this.userService.getCurrentUser();
-        Theme theme = this.themeService.findById(request.getTheme_id()).orElse(null);
+        User currentUser = userService.getCurrentUser();
+        Theme theme = themeService.findById(request.getTheme_id()).orElseThrow();
         Subscription subscription = new Subscription()
-            .setUser(currentUser)
-            .setTheme(theme);
-        return this.subscriptionRepository.save(subscription);
+                .setUser(currentUser)
+                .setTheme(theme);
+        return subscriptionRepository.save(subscription);
     }
 
     public void unsubscribe(UnsubscriptionRequest request) {
-        Subscription subscription = this.subscriptionRepository.findById(request.getId()).orElse(null);
-        if (subscription != null) {
-            this.subscriptionRepository.delete(subscription);
-        }
+        subscriptionRepository.findById(request.getId())
+            .ifPresent(subscriptionRepository::delete);
     }
 }

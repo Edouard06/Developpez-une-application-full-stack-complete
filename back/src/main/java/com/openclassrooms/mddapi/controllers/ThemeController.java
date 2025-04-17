@@ -1,9 +1,7 @@
 package com.openclassrooms.mddapi.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,23 +16,24 @@ import com.openclassrooms.mddapi.services.ThemeService;
 @RequestMapping("/api/theme")
 public class ThemeController {
 
-    @Autowired
-    private ThemeService themeService;
+    private final ThemeService themeService;
 
-    @GetMapping
-    public ResponseEntity<?> findAll() {
-        List<Theme> themes = this.themeService.findAll();
-        return ResponseEntity.ok().body(themes);
+    public ThemeController(ThemeService themeService) {
+        this.themeService = themeService;
     }
 
-   
+    @GetMapping
+    public ResponseEntity<List<Theme>> findAll() {
+        List<Theme> themes = themeService.findAll();
+        return ResponseEntity.ok(themes);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id") String id) {
         try {
-            Optional<Theme> theme = this.themeService.findById(Integer.parseInt(id));
-            
-            return theme.map(ResponseEntity::ok)
-                        .orElseGet(() -> ResponseEntity.notFound().build());
+            return themeService.findById(Integer.parseInt(id))
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
         } catch (NumberFormatException e) {
             return ResponseEntity.badRequest().build();
         }

@@ -9,7 +9,6 @@ import com.openclassrooms.mddapi.payload.response.GenericResponse;
 import com.openclassrooms.mddapi.services.ArticleService;
 import com.openclassrooms.mddapi.services.CommentService;
 import com.openclassrooms.mddapi.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +19,19 @@ import java.util.List;
 @RequestMapping("/api/comment")
 public class CommentController {
 
-    @Autowired
-    private CommentService commentService;
+    private final CommentService commentService;
+    private final UserService userService;
+    private final ArticleService articleService;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ArticleService articleService;
+    public CommentController(
+        CommentService commentService,
+        UserService userService,
+        ArticleService articleService
+    ) {
+        this.commentService = commentService;
+        this.userService = userService;
+        this.articleService = articleService;
+    }
 
     @PostMapping("/add")
     public GenericResponse addComment(@RequestBody CommentRequest request) {
