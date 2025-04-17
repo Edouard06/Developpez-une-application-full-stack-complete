@@ -6,7 +6,6 @@ import com.openclassrooms.mddapi.models.ArticleEntity;
 import com.openclassrooms.mddapi.payload.response.SubscriptionResponse;
 import com.openclassrooms.mddapi.repository.ArticleRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +15,19 @@ import java.util.stream.Collectors;
 @Service
 public class ArticleService {
 
-    @Autowired
-    private ArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
+    private final ArticleMapper articleMapper;
+    private final SubscriptionService subscriptionService;
 
-    @Autowired
-    private ArticleMapper articleMapper;
-
-    @Autowired
-    private SubscriptionService subscriptionService;
-
+    public ArticleService(
+        ArticleRepository articleRepository,
+        ArticleMapper articleMapper,
+        SubscriptionService subscriptionService
+    ) {
+        this.articleRepository = articleRepository;
+        this.articleMapper = articleMapper;
+        this.subscriptionService = subscriptionService;
+    }
     public ArticleEntity create(ArticleEntity article) {
         return this.articleRepository.save(article);
     }

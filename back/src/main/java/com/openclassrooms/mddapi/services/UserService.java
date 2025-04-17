@@ -1,6 +1,5 @@
 package com.openclassrooms.mddapi.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,11 +15,13 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final UserResponseMapper userResponseMapper;
 
-    @Autowired
-    private UserResponseMapper userResponseMapper;
+    public UserService(UserRepository userRepository, UserResponseMapper userResponseMapper) {
+        this.userRepository = userRepository;
+        this.userResponseMapper = userResponseMapper;
+    }
 
     public Optional<UserResponse> getUserById(final Integer id) {
         return userRepository.findById(id).map(userResponseMapper::toUserResponse);

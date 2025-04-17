@@ -9,7 +9,6 @@ import com.openclassrooms.mddapi.payload.request.ArticleRequest;
 import com.openclassrooms.mddapi.services.ArticleService;
 import com.openclassrooms.mddapi.services.ThemeService;
 import com.openclassrooms.mddapi.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,17 +19,22 @@ import java.util.List;
 @RequestMapping("/api/article")
 public class ArticleController {
 
-    @Autowired
-    private ArticleService articleService;
+    private final ArticleService articleService;
+    private final ThemeService themeService;
+    private final UserService userService;
+    private final ArticleMapper articleMapper;
 
-    @Autowired
-    private ThemeService themeService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ArticleMapper articleMapper;
+    public ArticleController(
+        ArticleService articleService,
+        ThemeService themeService,
+        UserService userService,
+        ArticleMapper articleMapper
+    ) {
+        this.articleService = articleService;
+        this.themeService = themeService;
+        this.userService = userService;
+        this.articleMapper = articleMapper;
+    }
 
     @PostMapping("/create")
     public ArticleEntity createArticle(@RequestBody ArticleRequest request) {

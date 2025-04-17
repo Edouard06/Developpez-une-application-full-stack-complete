@@ -18,8 +18,11 @@ import com.openclassrooms.mddapi.services.ThemeService;
 @RequestMapping("/api/theme")
 public class ThemeController {
 
-    @Autowired
-    private ThemeService themeService;
+    private final ThemeService themeService;
+
+    public ThemeController(ThemeService themeService) {
+        this.themeService = themeService;
+    }
 
     @GetMapping
     public ResponseEntity<?> findAll() {

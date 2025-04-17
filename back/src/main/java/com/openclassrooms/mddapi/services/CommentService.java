@@ -1,6 +1,5 @@
 package com.openclassrooms.mddapi.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +13,11 @@ import java.util.stream.Collectors;
 @Service
 public class CommentService {
 
-    @Autowired
-    private CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
+
+    public CommentService(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
+    }
 
     public List<CommentDto> getCommentsByArticleId(Integer articleId, Sort sort) {
         List<CommentEntity> comments = commentRepository.findByArticleId(articleId, sort);

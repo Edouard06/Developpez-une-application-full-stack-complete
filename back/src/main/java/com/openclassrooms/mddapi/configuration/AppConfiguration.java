@@ -1,6 +1,5 @@
 package com.openclassrooms.mddapi.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,16 +16,17 @@ import com.openclassrooms.mddapi.repository.UserRepository;
 @Configuration
 public class AppConfiguration {
 
-   
+    private final UserRepository userRepository;
+
+    public AppConfiguration(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+    
+    
     @Bean
     BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
-    
-    @Autowired
-    private UserRepository userRepository;
-
-   
     @Bean
     UserDetailsService userDetailsService(){
         return username -> userRepository.findByEmail(username)

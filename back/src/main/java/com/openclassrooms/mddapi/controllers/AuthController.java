@@ -1,6 +1,5 @@
 package com.openclassrooms.mddapi.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -22,15 +21,17 @@ import com.openclassrooms.mddapi.security.jwt.JwtUtils;
 import com.openclassrooms.mddapi.services.AuthenticationService;
 
 
-@RequestMapping("/api/auth")
 @RestController
+@RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
+    private final AuthenticationService authenticationService;
 
-    @Autowired
-    private AuthenticationService authenticationService;
+    public AuthController(JwtUtils jwtUtils, AuthenticationService authenticationService) {
+        this.jwtUtils = jwtUtils;
+        this.authenticationService = authenticationService;
+    }
     
        
         @PostMapping("/register")
