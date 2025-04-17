@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { UserSessionService } from 'src/app/core/services/user-session.service';
 import { filter, Observable } from 'rxjs';
@@ -8,8 +8,7 @@ import { filter, Observable } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
-
+export class HeaderComponent implements OnInit {
   @Output() sidenavToggle = new EventEmitter<void>();
   public displayBackArrow: boolean = false;
   public routesToHideBack: string[] = ["/", "/themes", "/feed", "/profile"];
@@ -26,6 +25,10 @@ export class HeaderComponent {
 
   public toggleSidenav(): void {
     this.sidenavToggle.emit();
+  }
+
+  public logout(): void {
+    this.userSessionService.logOut();
   }
 
   ngOnInit(): void {
