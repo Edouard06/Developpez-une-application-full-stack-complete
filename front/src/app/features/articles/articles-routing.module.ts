@@ -5,13 +5,13 @@ import { FormComponent } from './components/form/form.component';
 import { FeedComponent } from './components/feed/feed.component';
 
 const routes: Routes = [
-  { title: 'Form', path: 'create', component: FormComponent },
-  { title: 'Details', path: 'details/:id', component: DetailsComponent },
   { title: 'Feed', path: '', component: FeedComponent },
+  { title: 'Form', path: 'form', component: FormComponent },
+  { title: 'Details', path: ':id', component: DetailsComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ArticlesRoutingModule { }
+export class ArticlesRoutingModule {}
