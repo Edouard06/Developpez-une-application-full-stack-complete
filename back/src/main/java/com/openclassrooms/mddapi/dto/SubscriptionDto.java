@@ -7,7 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
 import java.time.LocalDateTime;
-
+/**
+ * Data Transfer Object for representing a subscription relationship.
+ * 
+ * Used to map the link between a user and a theme they have subscribed to,
+ * along with the timestamp of the subscription creation.
+ */
 @Data
 @Builder
 @NoArgsConstructor

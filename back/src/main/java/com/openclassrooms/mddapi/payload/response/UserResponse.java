@@ -1,4 +1,9 @@
 package com.openclassrooms.mddapi.payload.response;
+/**
+ * Response containing basic user information.
+ * Used for secure retrieval without exposing sensitive data.
+ */
+
 
 import java.time.LocalDateTime;
 

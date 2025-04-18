@@ -1,4 +1,8 @@
 package com.openclassrooms.mddapi.services;
+/**
+ * Service for retrieving and updating user information.
+ * Also handles current authenticated user logic.
+ */
 
 import com.openclassrooms.mddapi.dto.UserDto;
 import com.openclassrooms.mddapi.mapper.UserMapper;

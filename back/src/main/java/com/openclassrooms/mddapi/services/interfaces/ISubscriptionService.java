@@ -11,3 +11,4 @@ public interface ISubscriptionService {
     boolean subscribe(SubscriptionRequest request);
     boolean unsubscribe(UnsubscriptionRequest request);
 }
+// This interface defines the contract for subscription-related operations.

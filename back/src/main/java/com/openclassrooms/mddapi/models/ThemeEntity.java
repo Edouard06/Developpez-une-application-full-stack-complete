@@ -30,7 +30,12 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
+/**
+ * Represents a discussion theme to which users can subscribe and post articles.
+ * 
+ * Each theme contains a name and description, and is associated with
+ * a list of articles and user subscriptions.
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "THEMES")

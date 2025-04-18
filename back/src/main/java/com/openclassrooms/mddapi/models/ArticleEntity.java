@@ -34,6 +34,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+/**
+ * Represents an article published by a user on a specific theme.
+ * 
+ * Each article contains a title, content, author, and theme association.
+ * It includes metadata for creation and update timestamps, and links to related comments.
+ */
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)

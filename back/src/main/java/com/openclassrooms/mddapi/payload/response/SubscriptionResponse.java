@@ -1,4 +1,9 @@
 package com.openclassrooms.mddapi.payload.response;
+/**
+ * Response containing subscription details.
+ * Includes subscription ID, theme ID, user ID and creation date.
+ */
+
 
 import java.time.LocalDateTime;
 

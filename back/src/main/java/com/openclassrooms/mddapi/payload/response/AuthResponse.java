@@ -1,4 +1,9 @@
 package com.openclassrooms.mddapi.payload.response;
+/**
+ * Response returned after successful authentication.
+ * Contains the JWT token.
+ */
+
 
 
 public class AuthResponse {

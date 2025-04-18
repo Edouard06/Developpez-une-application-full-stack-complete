@@ -1,4 +1,7 @@
 package com.openclassrooms.mddapi.services;
+/**
+ * Service for retrieving theme data from the database.
+ */
 
 import com.openclassrooms.mddapi.dto.ThemeDto;
 import com.openclassrooms.mddapi.mapper.ThemeMapper;

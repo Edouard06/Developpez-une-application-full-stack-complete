@@ -1,11 +1,16 @@
 package com.openclassrooms.mddapi.payload.request;
+/**
+ * DTO used to update user information like username and email.
+ */
+
 
 public class UserRequest {
 
     private Integer id;
     private String username;
     private String email;
-    private String password; // Ajouté ici
+    private String password; 
+
 
     public Integer getId() {
         return id;

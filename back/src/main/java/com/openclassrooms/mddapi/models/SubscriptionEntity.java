@@ -24,7 +24,12 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
+/**
+ * Represents a subscription relationship between a user and a theme.
+ * 
+ * This entity records when a user subscribes to a given theme.
+ * It includes the subscription creation date.
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "SUBSCRIPTIONS")

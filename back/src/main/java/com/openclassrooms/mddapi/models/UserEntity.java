@@ -33,7 +33,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-
+/**
+ * Represents a user account in the application.
+ * 
+ * Implements Spring Security's {@link UserDetails} interface for authentication.
+ * 
+ * Each user can post articles, comments, and subscribe to various themes.
+ * Password is securely stored and the email is unique and used for login.
+ */
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "USERS")

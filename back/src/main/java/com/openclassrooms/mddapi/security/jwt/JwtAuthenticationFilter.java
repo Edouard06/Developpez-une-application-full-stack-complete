@@ -1,6 +1,9 @@
 package com.openclassrooms.mddapi.security.jwt;
 
 import java.io.IOException;
+/**
+ * Utility class for managing JWT operations like token generation, validation, and extraction.
+ */
 
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,4 +1,7 @@
 package com.openclassrooms.mddapi.services;
+/**
+ * Service for managing comment operations such as saving and fetching.
+ */
 
 import com.openclassrooms.mddapi.dto.CommentDto;
 import com.openclassrooms.mddapi.mapper.CommentMapper;

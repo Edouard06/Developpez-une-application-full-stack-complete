@@ -1,7 +1,10 @@
 package com.openclassrooms.mddapi.payload.request;
 
 import jakarta.validation.constraints.NotBlank;
-
+/**
+ * DTO for creating a new article.
+ * Contains the theme ID, title and content.
+ */
 public class ArticleRequest {
     @NotBlank
     String title;

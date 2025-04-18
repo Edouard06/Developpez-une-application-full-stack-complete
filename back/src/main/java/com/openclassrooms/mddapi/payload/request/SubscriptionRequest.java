@@ -1,6 +1,11 @@
 package com.openclassrooms.mddapi.payload.request;
 
 import jakarta.validation.constraints.NotNull;
+/**
+ * DTO for creating a new subscription to a theme.
+ * Contains the ID of the theme to subscribe to.
+ */
+
 
 public class SubscriptionRequest {
 

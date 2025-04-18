@@ -1,4 +1,8 @@
 package com.openclassrooms.mddapi.services;
+/**
+ * Service handling user subscriptions to themes.
+ * Manages subscription creation, deletion and DTO conversion.
+ */
 
 import com.openclassrooms.mddapi.dto.SubscriptionDto;
 import com.openclassrooms.mddapi.mapper.SubscriptionMapper;

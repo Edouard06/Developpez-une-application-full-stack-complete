@@ -1,6 +1,10 @@
 package com.openclassrooms.mddapi.payload.request;
 
 import jakarta.validation.constraints.NotBlank;
+/**
+ * DTO used to post a new comment on an article.
+ * Carries the content and the article ID.
+ */
 
 public class CommentRequest {
 

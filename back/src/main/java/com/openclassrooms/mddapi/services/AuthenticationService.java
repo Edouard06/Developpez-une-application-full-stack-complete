@@ -1,4 +1,8 @@
 package com.openclassrooms.mddapi.services;
+/**
+ * Service responsible for user authentication and registration.
+ * Encodes passwords and verifies credentials.
+ */
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

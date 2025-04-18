@@ -1,4 +1,9 @@
 package com.openclassrooms.mddapi.services;
+/**
+ * Service class responsible for business logic related to articles.
+ * Handles creation, retrieval and mapping to DTOs.
+ */
+
 
 import com.openclassrooms.mddapi.dto.ArticleDto;
 import com.openclassrooms.mddapi.mapper.ArticleMapper;
