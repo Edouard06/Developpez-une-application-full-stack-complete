@@ -54,10 +54,15 @@ export class ProfileComponent implements OnInit {
   private loadSubscriptionsWithThemes() {
     const subscriptions$ = this.subscriptionService.all();
     const themes$ = this.themeService.all();
+
     this.subscriptionsWithThemes$ = combineLatest([subscriptions$, themes$]).pipe(
       map(([subscriptions, themes]) => {
-        return subscriptions.map((subscription) => {
-          const theme = themes.find((theme) => theme.id === subscription.theme_id);
+        const uniqueSubsByThemeId = subscriptions.filter(
+          (sub, index, self) => index === self.findIndex(s => s.themeId === sub.themeId)
+        );
+
+        return uniqueSubsByThemeId.map((subscription) => {
+          const theme = themes.find((theme) => theme.id === subscription.themeId);
           return {
             ...subscription,
             theme,

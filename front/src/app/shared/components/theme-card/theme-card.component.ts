@@ -34,7 +34,7 @@ export class ThemeCardComponent {
   public checkIfUserIsSubscribed() {
     this.isSubscribed$ = this.subscriptionService.all().pipe(
       map(subscriptions => {
-        const subscription = subscriptions.find(sub => sub.theme_id === this.theme.id);
+        const subscription = subscriptions.find(sub => sub.themeId === this.theme.id);
         if (subscription) {
           this.subscriptionId = subscription.id;
           return true;

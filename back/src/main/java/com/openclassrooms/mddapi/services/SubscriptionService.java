@@ -1,5 +1,7 @@
 package com.openclassrooms.mddapi.services;
 
+import com.openclassrooms.mddapi.dto.SubscriptionDto;
+import com.openclassrooms.mddapi.mapper.SubscriptionMapper;
 import com.openclassrooms.mddapi.models.SubscriptionEntity;
 import com.openclassrooms.mddapi.models.ThemeEntity;
 import com.openclassrooms.mddapi.models.UserEntity;
@@ -7,6 +9,7 @@ import com.openclassrooms.mddapi.payload.request.SubscriptionRequest;
 import com.openclassrooms.mddapi.payload.request.UnsubscriptionRequest;
 import com.openclassrooms.mddapi.payload.response.SubscriptionResponse;
 import com.openclassrooms.mddapi.repository.SubscriptionRepository;
+import com.openclassrooms.mddapi.services.interfaces.ISubscriptionService;
 
 import org.springframework.stereotype.Service;
 
@@ -14,52 +17,61 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class SubscriptionService {
+public class SubscriptionService implements ISubscriptionService {
 
     private final SubscriptionRepository subscriptionRepository;
     private final UserService userService;
     private final ThemeService themeService;
+    private final SubscriptionMapper subscriptionMapper;
 
     public SubscriptionService(
         SubscriptionRepository subscriptionRepository,
         UserService userService,
-        ThemeService themeService
+        ThemeService themeService,
+        SubscriptionMapper subscriptionMapper
     ) {
         this.subscriptionRepository = subscriptionRepository;
         this.userService = userService;
         this.themeService = themeService;
+        this.subscriptionMapper = subscriptionMapper;
     }
 
-    public SubscriptionResponse convertToResponse(SubscriptionEntity subscription) {
-        SubscriptionResponse response = new SubscriptionResponse();
-        response.setId(subscription.getId());
-        response.setTheme_id(subscription.getTheme().getId());
-        response.setUser_id(subscription.getUser().getId());
-        response.setCreatedAt(subscription.getCreatedAt());
-        return response;
-    }
-
-    public List<SubscriptionResponse> getCurrentUserSubscriptions() {
+    @Override
+    public List<SubscriptionDto> getCurrentUserSubscriptions() {
         UserEntity currentUser = this.userService.getCurrentUser();
-        List<SubscriptionEntity> subscriptions = this.subscriptionRepository.findByUserId(currentUser.getId());
-        return subscriptions.stream()
-                            .map(this::convertToResponse)
-                            .collect(Collectors.toList());
+        return subscriptionRepository.findByUserId(currentUser.getId())
+                .stream()
+                .map(subscriptionMapper::toDto)
+                .collect(Collectors.toList());
     }
 
-    public SubscriptionEntity subscribe(SubscriptionRequest request) {
-        UserEntity currentUser = this.userService.getCurrentUser();
-        ThemeEntity theme = this.themeService.findById(request.getTheme_id()).orElse(null);
+    @Override
+    public boolean subscribe(SubscriptionRequest request) {
+        UserEntity currentUser = userService.getCurrentUser();
+        ThemeEntity theme = themeService.getEntityById(request.getTheme_id()).orElse(null);
+    
+        if (theme == null) return false;
+    
+        boolean alreadySubscribed = subscriptionRepository.findByUserId(currentUser.getId())
+                .stream()
+                .anyMatch(s -> s.getTheme().getId().equals(theme.getId()));
+    
+        if (alreadySubscribed) return false;
+    
         SubscriptionEntity subscription = new SubscriptionEntity()
             .setUser(currentUser)
             .setTheme(theme);
-        return this.subscriptionRepository.save(subscription);
+    
+        subscriptionRepository.save(subscription);
+        return true;
     }
 
-    public void unsubscribe(UnsubscriptionRequest request) {
-        SubscriptionEntity subscription = this.subscriptionRepository.findById(request.getId()).orElse(null);
-        if (subscription != null) {
-            this.subscriptionRepository.delete(subscription);
-        }
+    @Override
+    public boolean unsubscribe(UnsubscriptionRequest request) {
+        SubscriptionEntity subscription = subscriptionRepository.findById(request.getId()).orElse(null);
+        if (subscription == null) return false;
+
+        subscriptionRepository.delete(subscription);
+        return true;
     }
 }

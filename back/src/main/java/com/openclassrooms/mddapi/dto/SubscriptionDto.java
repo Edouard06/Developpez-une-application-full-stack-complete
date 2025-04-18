@@ -1,6 +1,5 @@
 package com.openclassrooms.mddapi.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,11 +13,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Accessors(chain = true)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class CommentDto {
+public class SubscriptionDto {
 
     private Integer id;
-    private String content;
-    private String author;
+    private Integer userId;
+    private Integer themeId;
     private LocalDateTime createdAt;
 }

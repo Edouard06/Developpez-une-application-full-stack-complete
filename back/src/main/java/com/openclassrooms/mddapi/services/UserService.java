@@ -1,80 +1,82 @@
 package com.openclassrooms.mddapi.services;
 
+import com.openclassrooms.mddapi.dto.UserDto;
+import com.openclassrooms.mddapi.mapper.UserMapper;
+import com.openclassrooms.mddapi.models.UserEntity;
+import com.openclassrooms.mddapi.payload.request.UserRequest;
+import com.openclassrooms.mddapi.repository.UserRepository;
+import com.openclassrooms.mddapi.services.interfaces.IUserService;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.openclassrooms.mddapi.mapper.UserResponseMapper;
-import com.openclassrooms.mddapi.models.UserEntity;
-import com.openclassrooms.mddapi.payload.request.UserRequest;
-import com.openclassrooms.mddapi.payload.response.UserResponse;
-import com.openclassrooms.mddapi.repository.UserRepository;
-
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements IUserService {
 
     private final UserRepository userRepository;
-    private final UserResponseMapper userResponseMapper;
+    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(
-        UserRepository userRepository,
-        UserResponseMapper userResponseMapper,
-        PasswordEncoder passwordEncoder
-    ) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.userResponseMapper = userResponseMapper;
+        this.userMapper = userMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Optional<UserResponse> getUserById(final Integer id) {
-        return userRepository.findById(id).map(userResponseMapper::toUserResponse);
+  
+    @Override
+    public Optional<UserDto> getUserById(Integer id) {
+        return userRepository.findById(id).map(userMapper::toDto);
     }
 
-    public Optional<UserEntity> findById(Integer id) {
-        return userRepository.findById(id);
+    
+    @Override
+    public boolean updateUser(UserRequest request) {
+        return userRepository.findById(request.getId()).map(user -> {
+            user.setUsername(request.getUsername());
+            user.setEmail(request.getEmail());
+
+            if (request.getPassword() != null && !request.getPassword().isEmpty()) {
+                user.setPassword(passwordEncoder.encode(request.getPassword()));
+            }
+
+            userRepository.save(user);
+            return true;
+        }).orElse(false);
     }
 
-    public UserResponse getSafeCurrentUser() {
+  
+    @Override
+    public UserDto getSafeCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDetails) {
-                String username = ((UserDetails) principal).getUsername();
-                UserEntity user = userRepository.findByEmail(username).orElse(null);
-                return userResponseMapper.toUserResponse(user);
+            if (principal instanceof UserDetails userDetails) {
+                String username = userDetails.getUsername();
+                return userRepository.findByEmail(username)
+                        .map(userMapper::toDto)
+                        .orElse(null);
             }
         }
         return null;
     }
 
+    
+    @Override
     public UserEntity getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
-            if (principal instanceof UserDetails) {
-                String username = ((UserDetails) principal).getUsername();
+            if (principal instanceof UserDetails userDetails) {
+                String username = userDetails.getUsername();
                 return userRepository.findByEmail(username).orElse(null);
             }
         }
         return null;
-    }
-
-    public UserEntity updateUser(UserRequest request) {
-        UserEntity user = userRepository.findById(request.getId()).orElse(null);
-        if (user == null) return null;
-
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
-
-        if (request.getPassword() != null && !request.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(request.getPassword()));
-        }
-
-        return userRepository.save(user);
     }
 }

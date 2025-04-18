@@ -1,41 +1,36 @@
 package com.openclassrooms.mddapi.services;
 
+import com.openclassrooms.mddapi.dto.CommentDto;
+import com.openclassrooms.mddapi.mapper.CommentMapper;
+import com.openclassrooms.mddapi.models.CommentEntity;
+import com.openclassrooms.mddapi.repository.CommentRepository;
+import com.openclassrooms.mddapi.services.interfaces.ICommentService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.openclassrooms.mddapi.dto.CommentDto;
-import com.openclassrooms.mddapi.models.CommentEntity;
-import com.openclassrooms.mddapi.repository.CommentRepository;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-public class CommentService {
+public class CommentService implements ICommentService {
 
     private final CommentRepository commentRepository;
+    private final CommentMapper commentMapper;
 
-    public CommentService(CommentRepository commentRepository) {
+    public CommentService(CommentRepository commentRepository, CommentMapper commentMapper) {
         this.commentRepository = commentRepository;
+        this.commentMapper = commentMapper;
     }
 
+    @Override
+    public void addComment(CommentEntity comment) {
+        commentRepository.save(comment);
+    }
+
+    @Override
     public List<CommentDto> getCommentsByArticleId(Integer articleId, Sort sort) {
-        List<CommentEntity> comments = commentRepository.findByArticleId(articleId, sort);
-        return comments.stream()
-                       .map(this::convertToDTO)
-                       .collect(Collectors.toList());
-    }
-
-    public CommentEntity addComment(CommentEntity comment) {
-        return this.commentRepository.save(comment);
-    }
-
-    private CommentDto convertToDTO(CommentEntity comment) {
-        CommentDto dto = new CommentDto();
-        dto.setId(comment.getId());
-        dto.setAuthor(comment.getAuthor().getDisplayUsername());
-        dto.setContent(comment.getContent());
-        dto.setCreatedAt(comment.getCreatedAt());
-        return dto;
+        return commentRepository.findByArticleId(articleId, sort)
+                .stream()
+                .map(commentMapper::toDto)
+                .toList();
     }
 }

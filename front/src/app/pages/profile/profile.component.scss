@@ -1,35 +1,67 @@
 @import 'responsive';
-.profile-wrapper{
-    margin: calc($margins / 2);
-    height: $height-w-header;
-    max-height: $height-w-header;
+
+.profile-wrapper {
+  margin: calc($margins / 2);
+  height: $height-w-header;
+  max-height: $height-w-header;
+  display: flex;
+  flex-direction: column;
+
+  .profile-container {
     display: flex;
     flex-direction: column;
-    .profile-container{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        .user-form{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .logout-btn{
-            color: rgb(224, 25, 10);
-        }
+    align-items: center;
+
+    .user-form {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 400px;
+      gap: 1rem;
     }
-    .theme-container{
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        overflow: auto;
-        padding: 0.5rem;
-        .theme-card{
-            flex-basis: 100%;
-            @include md {
-                flex-basis: calc(50% - 1rem);
-            }
-        }
+
+    .logout-btn {
+      color: rgb(224, 25, 10);
     }
-}
+  }
+
+  // 🔽 Barre de séparation
+  .divider {
+    border: none;
+    border-top: 2px solid #ddd;
+    margin: 3rem auto 2rem;
+    width: 60%;
+  }
+
+  // 🔽 Section abonnements
+  .subscription-section {
+    text-align: center;
+    padding: 0 1rem;
+
+    .subscription-title {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+
+    .theme-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        justify-content: center;
+      
+        @include md {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      
+      }
+      
+      .theme-card {
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+

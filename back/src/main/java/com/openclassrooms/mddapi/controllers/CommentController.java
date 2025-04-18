@@ -7,8 +7,8 @@ import com.openclassrooms.mddapi.models.UserEntity;
 import com.openclassrooms.mddapi.payload.request.CommentRequest;
 import com.openclassrooms.mddapi.payload.response.GenericResponse;
 import com.openclassrooms.mddapi.services.ArticleService;
-import com.openclassrooms.mddapi.services.CommentService;
 import com.openclassrooms.mddapi.services.UserService;
+import com.openclassrooms.mddapi.services.interfaces.ICommentService;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +19,12 @@ import java.util.List;
 @RequestMapping("/api/comment")
 public class CommentController {
 
-    private final CommentService commentService;
+    private final ICommentService commentService;
     private final UserService userService;
     private final ArticleService articleService;
 
     public CommentController(
-        CommentService commentService,
+        ICommentService commentService,
         UserService userService,
         ArticleService articleService
     ) {
@@ -34,18 +34,17 @@ public class CommentController {
     }
 
     @PostMapping("/add")
-    public GenericResponse addComment(@RequestBody CommentRequest request) {
-        UserEntity currentUser = this.userService.getCurrentUser();
-        ArticleEntity relatedArticle = this.articleService.findById(request.getArticle_id());
+    public ResponseEntity<GenericResponse> addComment(@RequestBody CommentRequest request) {
+        UserEntity currentUser = userService.getCurrentUser();
+        ArticleEntity relatedArticle = this.articleService.getEntityById(request.getArticle_id());
 
         CommentEntity commentToAdd = new CommentEntity()
             .setAuthor(currentUser)
             .setArticle(relatedArticle)
             .setContent(request.getContent());
 
-        this.commentService.addComment(commentToAdd);
-
-        return new GenericResponse("Commentaire ajouté");
+        commentService.addComment(commentToAdd);
+        return ResponseEntity.ok(new GenericResponse("Commentaire ajouté"));
     }
 
     @GetMapping

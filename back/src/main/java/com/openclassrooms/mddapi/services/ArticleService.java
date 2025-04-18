@@ -3,17 +3,16 @@ package com.openclassrooms.mddapi.services;
 import com.openclassrooms.mddapi.dto.ArticleDto;
 import com.openclassrooms.mddapi.mapper.ArticleMapper;
 import com.openclassrooms.mddapi.models.ArticleEntity;
-import com.openclassrooms.mddapi.payload.response.SubscriptionResponse;
 import com.openclassrooms.mddapi.repository.ArticleRepository;
+import com.openclassrooms.mddapi.services.interfaces.IArticleService;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-public class ArticleService {
+public class ArticleService implements IArticleService {
 
     private final ArticleRepository articleRepository;
     private final ArticleMapper articleMapper;
@@ -28,23 +27,35 @@ public class ArticleService {
         this.articleMapper = articleMapper;
         this.subscriptionService = subscriptionService;
     }
-    public ArticleEntity create(ArticleEntity article) {
-        return this.articleRepository.save(article);
+
+    @Override
+    public ArticleDto createArticleFromRequest(ArticleEntity article) {
+        ArticleEntity saved = this.articleRepository.save(article);
+        return articleMapper.toDto(saved);
     }
 
-    public ArticleEntity findById(Integer id) {
-        return this.articleRepository.findById(id).orElse(null);
+    @Override
+    public ArticleDto findById(Integer id) {
+        return this.articleRepository.findById(id)
+                .map(articleMapper::toDto)
+                .orElse(null);
     }
 
+    @Override
     public List<ArticleDto> findAllArticlesByUserSubscriptions(Sort sort) {
-        List<SubscriptionResponse> subscriptions = this.subscriptionService.getCurrentUserSubscriptions();
-        List<Integer> themeIds = subscriptions.stream()
-                .map(SubscriptionResponse::getTheme_id)
+        List<Integer> themeIds = subscriptionService.getCurrentUserSubscriptions()
+                .stream()
+                .map(subscription -> subscription.getThemeId()) 
                 .toList();
+    
+        return this.articleRepository.findByThemeIdIn(themeIds, sort)
+                .stream()
+                .map(articleMapper::toDto)
+                .toList();
+    }
+    
 
-        List<ArticleEntity> articles = this.articleRepository.findByThemeIdIn(themeIds, sort);
-        return articles.stream()
-                       .map(articleMapper::toDto)
-                       .toList();
+    public ArticleEntity getEntityById(Integer id) {
+        return this.articleRepository.findById(id).orElse(null);
     }
 }

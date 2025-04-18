@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.openclassrooms.mddapi.dto.SubscriptionDto;
 import com.openclassrooms.mddapi.payload.request.SubscriptionRequest;
 import com.openclassrooms.mddapi.payload.request.UnsubscriptionRequest;
 import com.openclassrooms.mddapi.payload.response.GenericResponse;
-import com.openclassrooms.mddapi.payload.response.SubscriptionResponse;
-import com.openclassrooms.mddapi.services.SubscriptionService;
+import com.openclassrooms.mddapi.services.interfaces.ISubscriptionService;
 
 /**
  * Controller for managing user subscriptions.
@@ -23,35 +23,35 @@ import com.openclassrooms.mddapi.services.SubscriptionService;
 @RequestMapping("api/subscription")
 public class SubscriptionController {
 
-    private final SubscriptionService subscriptionService;
+    private final ISubscriptionService subscriptionService;
 
-    public SubscriptionController(SubscriptionService subscriptionService) {
+    public SubscriptionController(ISubscriptionService subscriptionService) {
         this.subscriptionService = subscriptionService;
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<SubscriptionResponse>> getCurrentUserSubscriptions() {
-        List<SubscriptionResponse> subscriptions = subscriptionService.getCurrentUserSubscriptions();
+    public ResponseEntity<List<SubscriptionDto>> getCurrentUserSubscriptions() {
+        List<SubscriptionDto> subscriptions = subscriptionService.getCurrentUserSubscriptions();
         return ResponseEntity.ok(subscriptions);
     }
 
     @PostMapping("/subscribe")
     public ResponseEntity<GenericResponse> subscribe(@RequestBody SubscriptionRequest request) {
-        try {
-            subscriptionService.subscribe(request);
+        boolean success = subscriptionService.subscribe(request);
+        if (success) {
             return ResponseEntity.ok(new GenericResponse("Vous vous êtes abonné"));
-        } catch (Exception e) {
-            return ResponseEntity.ok(new GenericResponse("Erreur: " + e.getMessage()));
+        } else {
+            return ResponseEntity.badRequest().body(new GenericResponse("Erreur : Thème introuvable"));
         }
     }
 
     @PostMapping("/unsubscribe")
     public ResponseEntity<GenericResponse> unsubscribe(@RequestBody UnsubscriptionRequest request) {
-        try {
-            subscriptionService.unsubscribe(request);
+        boolean success = subscriptionService.unsubscribe(request);
+        if (success) {
             return ResponseEntity.ok(new GenericResponse("Vous vous êtes désabonné"));
-        } catch (Exception e) {
-            return ResponseEntity.ok(new GenericResponse("Erreur: " + e.getMessage()));
+        } else {
+            return ResponseEntity.status(404).body(new GenericResponse("Erreur : Abonnement introuvable"));
         }
     }
 }
