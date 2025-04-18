@@ -1,25 +1,51 @@
-# P6-Full-Stack-reseau-dev
+Project Setup Guide
 
-## Front
+1.Cloning the Repository
+      
+Clone the project repository:
+git clone https://github.com/Edouard06/Developpez-une-application-full-stack-complete
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.3.
+ 2. Installing Dependencies
+      
+Frontend:
+Navigate to the frontend directory and install dependencies:
+cd front
+npm install
 
-Don't forget to install your node_modules before starting (`npm install`).
+Backend:
+Navigate to the backend directory and install Maven dependencies:
+cd ../back
+mvn install
 
-### Development server
+3.Database Setup
+      
+Ensure MySQL is installed on your machine. If not, install it via:
+https://dev.mysql.com/doc/mysql-installation-excerpt/5.7/en/
+Update your MySQL credentials in 'back/src/main/resources/application.properties':
+- spring.datasource.username
+- spring.datasource.password
+Launch MySQL and create the database:
+- On Linux/Mac: mysql -u root -p
+- On Windows: use the MySQL Command Line Client
+- Inside MySQL:
+  CREATE DATABASE mdd;
+  USE mdd;
+  Import schema: mysql -u root -p mdd < ressources/sql/script.sql
+  
+4. Running the Application
+      
+Backend:
+In the back directory, start the server:
+mvn spring-boot:run
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Frontend:
+In the front directory, start the Angular app:
+ng serve
+Visit: http://localhost:4200
 
-### Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-### Where to start
-
-As you may have seen if you already started the app, a simple home page containing a logo, a title and a button is available. If you take a look at its code (in the `home.component.html`) you will see that an external UI library is already configured in the project.
-
-This library is `@angular/material`, it's one of the most famous in the angular ecosystem. As you can see on their docs (https://material.angular.io/), it contains a lot of highly customizable components that will help you design your interfaces quickly.
-
-Note: I recommend to use material however it's not mandatory, if you prefer you can get rid of it.
-
-Good luck!
+ 5. Features Overview
+- Register and login users.
+- Subscribe to existing themes.
+- Create and view articles.
+- Update profile details.
+- Responsive UI for different screen sizes.
