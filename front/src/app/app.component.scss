@@ -11,7 +11,7 @@
             height: calc(100vh - ($header-height + 2.5rem));
             display: flex;
             flex-direction: column;
-            align-items: end;
+            align-items: flex-end;
             justify-content: space-between;
             padding: 2rem 2rem 0;
             .link-container{

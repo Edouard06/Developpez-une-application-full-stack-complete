@@ -18,6 +18,9 @@ import { UserSessionService } from './core/services/user-session.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
+  title(title: any) {
+    throw new Error('Method not implemented.');
+  }
   @ViewChild(MatSidenav) sidenav!: MatSidenav;
 
 
