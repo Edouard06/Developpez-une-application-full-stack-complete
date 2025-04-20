@@ -95,4 +95,10 @@ public class ArticleEntity {
     @Builder.Default
     @JsonBackReference
     private Set<CommentEntity> comments = new HashSet<>();
+
+
+    public ArticleEntity orElse(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElse'");
+    }
 }

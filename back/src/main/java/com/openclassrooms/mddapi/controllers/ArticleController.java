@@ -1,7 +1,6 @@
 package com.openclassrooms.mddapi.controllers;
 
 import com.openclassrooms.mddapi.dto.ArticleDto;
-import com.openclassrooms.mddapi.models.ArticleEntity;
 import com.openclassrooms.mddapi.models.ThemeEntity;
 import com.openclassrooms.mddapi.models.UserEntity;
 import com.openclassrooms.mddapi.payload.request.ArticleRequest;
@@ -37,15 +36,9 @@ public class ArticleController {
         UserEntity currentUser = this.userService.getCurrentUser();
         ThemeEntity relatedTheme = this.themeService.getEntityById(request.getTheme_id()).orElse(null);
 
+        ArticleDto createdArticle = this.articleService.createArticleFromRequest(request, currentUser, relatedTheme);
 
-        ArticleEntity article = new ArticleEntity()
-                .setAuthor(currentUser)
-                .setTheme(relatedTheme)
-                .setTitle(request.getTitle())
-                .setContent(request.getContent());
-
-        ArticleDto created = this.articleService.createArticleFromRequest(article);
-        return ResponseEntity.ok(created);
+        return ResponseEntity.ok(createdArticle);
     }
 
     @GetMapping

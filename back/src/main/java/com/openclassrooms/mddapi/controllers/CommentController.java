@@ -36,7 +36,7 @@ public class CommentController {
     @PostMapping("/add")
     public ResponseEntity<GenericResponse> addComment(@RequestBody CommentRequest request) {
         UserEntity currentUser = userService.getCurrentUser();
-        ArticleEntity relatedArticle = this.articleService.getEntityById(request.getArticle_id());
+        ArticleEntity relatedArticle = this.articleService.getEntityById(request.getArticle_id()).orElse(null);
 
         CommentEntity commentToAdd = new CommentEntity()
             .setAuthor(currentUser)

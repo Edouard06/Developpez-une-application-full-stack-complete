@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.openclassrooms.mddapi.dto.UserDto;
 import com.openclassrooms.mddapi.models.UserEntity;
 import com.openclassrooms.mddapi.payload.request.LoginRequest;
 import com.openclassrooms.mddapi.payload.request.RegisterRequest;
 import com.openclassrooms.mddapi.payload.response.AuthResponse;
 import com.openclassrooms.mddapi.payload.response.GenericResponse;
-import com.openclassrooms.mddapi.payload.response.UserResponse;
 import com.openclassrooms.mddapi.security.jwt.JwtUtils;
 import com.openclassrooms.mddapi.services.AuthenticationService;
 
@@ -32,25 +32,22 @@ public class AuthController {
         this.jwtUtils = jwtUtils;
         this.authenticationService = authenticationService;
     }
-    
-       
-        @PostMapping("/register")
-        public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-            try {
-                UserEntity registeredUser = authenticationService.register(request);
-    
-                String jwtToken = jwtUtils.generateToken(registeredUser);
-                AuthResponse response = new AuthResponse(jwtToken);
-    
-                return ResponseEntity.ok(response);
-            }
-            catch (AuthenticationException ex) {
-                GenericResponse errorResponse = new GenericResponse("User already exists.");
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
-            }
-        }
 
- 
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        try {
+            UserEntity registeredUser = authenticationService.register(request);
+
+            String jwtToken = jwtUtils.generateToken(registeredUser);
+            AuthResponse response = new AuthResponse(jwtToken);
+
+            return ResponseEntity.ok(response);
+        } catch (AuthenticationException ex) {
+            GenericResponse errorResponse = new GenericResponse("User already exists.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorResponse);
+        }
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@RequestBody LoginRequest request) {
         try {
@@ -60,14 +57,12 @@ public class AuthController {
             AuthResponse response = new AuthResponse(jwtToken);
 
             return ResponseEntity.ok(response);
-        }
-        catch (AuthenticationException ex) {
+        } catch (AuthenticationException ex) {
             GenericResponse errorResponse = new GenericResponse("Wrong credentials");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
         }
     }
 
-   
     @GetMapping("/me")
     public ResponseEntity<?> authenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -78,12 +73,10 @@ public class AuthController {
 
         UserEntity currentUser = (UserEntity) authentication.getPrincipal();
 
-        UserResponse userDetails = new UserResponse(
+        UserDto userDetails = new UserDto(
             currentUser.getId(),
-            currentUser.getDisplayUsername(),
-            currentUser.getEmail(),
-            currentUser.getCreatedAt(),
-            currentUser.getUpdatedAt()
+            currentUser.getUsername(),  
+            currentUser.getEmail()
         );
 
         return ResponseEntity.ok(userDetails);

@@ -7,13 +7,13 @@ import jakarta.validation.constraints.NotBlank;
  */
 public class ArticleRequest {
     @NotBlank
-    String title;
+    private String title;
 
     @NotBlank
-    String content;
+    private  String content;
 
     @NotBlank
-    Integer theme_id;
+    private Integer theme_id;
 
     public String getTitle() {
         return title;

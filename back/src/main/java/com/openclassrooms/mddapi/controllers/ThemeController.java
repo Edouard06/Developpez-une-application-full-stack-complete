@@ -1,7 +1,6 @@
 package com.openclassrooms.mddapi.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.openclassrooms.mddapi.dto.ThemeDto;
-import com.openclassrooms.mddapi.models.ThemeEntity;
-import com.openclassrooms.mddapi.services.ThemeService;
 import com.openclassrooms.mddapi.services.interfaces.IThemeService;
 
 
@@ -41,3 +38,4 @@ public class ThemeController {
         }
     }
 }
+

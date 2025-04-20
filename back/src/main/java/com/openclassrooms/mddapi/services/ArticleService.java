@@ -8,6 +8,9 @@ package com.openclassrooms.mddapi.services;
 import com.openclassrooms.mddapi.dto.ArticleDto;
 import com.openclassrooms.mddapi.mapper.ArticleMapper;
 import com.openclassrooms.mddapi.models.ArticleEntity;
+import com.openclassrooms.mddapi.models.ThemeEntity;
+import com.openclassrooms.mddapi.models.UserEntity;
+import com.openclassrooms.mddapi.payload.request.ArticleRequest;
 import com.openclassrooms.mddapi.repository.ArticleRepository;
 import com.openclassrooms.mddapi.services.interfaces.IArticleService;
 
@@ -15,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArticleService implements IArticleService {
@@ -33,11 +37,18 @@ public class ArticleService implements IArticleService {
         this.subscriptionService = subscriptionService;
     }
 
-    @Override
-    public ArticleDto createArticleFromRequest(ArticleEntity article) {
-        ArticleEntity saved = this.articleRepository.save(article);
-        return articleMapper.toDto(saved);
-    }
+   @Override
+public ArticleDto createArticleFromRequest(ArticleRequest request, UserEntity author, ThemeEntity theme) {
+    ArticleEntity article = new ArticleEntity()
+            .setAuthor(author)
+            .setTheme(theme)
+            .setTitle(request.getTitle())
+            .setContent(request.getContent());
+
+    ArticleEntity saved = this.articleRepository.save(article);
+    return articleMapper.toDto(saved);
+}
+
 
     @Override
     public ArticleDto findById(Integer id) {
@@ -60,7 +71,8 @@ public class ArticleService implements IArticleService {
     }
     
 
-    public ArticleEntity getEntityById(Integer id) {
-        return this.articleRepository.findById(id).orElse(null);
+    public Optional<ArticleEntity> getEntityById(Integer id) {
+        return this.articleRepository.findById(id);
     }
+    
 }

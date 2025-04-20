@@ -4,16 +4,12 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.openclassrooms.mddapi.payload.request.UserRequest;
 import com.openclassrooms.mddapi.payload.response.GenericResponse;
-import com.openclassrooms.mddapi.payload.response.UserResponse;
-import com.openclassrooms.mddapi.services.UserService;
 import com.openclassrooms.mddapi.services.interfaces.IUserService;
 import com.openclassrooms.mddapi.dto.UserDto;
-import com.openclassrooms.mddapi.models.UserEntity;
 
 /**
  * Controller for managing user information.
