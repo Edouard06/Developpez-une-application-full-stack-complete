@@ -58,18 +58,21 @@ public class UserService implements IUserService {
     @Override
     public UserDto getSafeCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    
         if (authentication != null && authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
+    
             if (principal instanceof UserDetails userDetails) {
-                String username = userDetails.getUsername();
-                return userRepository.findByEmail(username)
+                UserEntity u = userRepository.findByEmail(userDetails.getUsername()).orElse(null);
+                return Optional.ofNullable(u)
                         .map(userMapper::toDto)
                         .orElse(null);
             }
         }
+    
         return null;
     }
-
+    
     
     @Override
     public UserEntity getCurrentUser() {

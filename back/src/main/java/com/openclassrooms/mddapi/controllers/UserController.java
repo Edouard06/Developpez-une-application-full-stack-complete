@@ -50,4 +50,12 @@ public class UserController {
                     .body(new GenericResponse("Erreur lors de la modification"));
         }
     }
+
+    @GetMapping("/me")
+public ResponseEntity<UserDto> getCurrentUserProfile() {
+    return Optional.ofNullable(userService.getSafeCurrentUser())
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+}
+
 }

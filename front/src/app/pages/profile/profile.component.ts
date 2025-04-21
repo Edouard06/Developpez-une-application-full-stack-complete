@@ -40,13 +40,14 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.user$ = this.authService.me().pipe(
-      tap((user) =>
+      tap((user) => {
+        console.log('👤 USER FROM API =', user);
         this.form.patchValue({
           username: user.username,
           email: user.email,
           id: user.id,
-        })
-      )
+        });
+      })
     );
     this.loadSubscriptionsWithThemes();
   }

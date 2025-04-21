@@ -19,8 +19,7 @@ export class AuthService {
   }
 
   public me(): Observable<User> {
-    return this.httpClient.get<User>(`${this.pathService}/me`);
-  }
+    return this.httpClient.get<User>('http://localhost:8080/api/user/me');  }
 
   public register(registerRequest: RegisterRequest): Observable<AuthSuccess> {
     return this.httpClient.post<AuthSuccess>(`${this.pathService}/register`, registerRequest);

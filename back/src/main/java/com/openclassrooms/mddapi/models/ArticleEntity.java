@@ -98,7 +98,6 @@ public class ArticleEntity {
 
 
     public ArticleEntity orElse(Object object) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'orElse'");
     }
 }
