@@ -97,7 +97,5 @@ public class ArticleEntity {
     private Set<CommentEntity> comments = new HashSet<>();
 
 
-    public ArticleEntity orElse(Object object) {
-        throw new UnsupportedOperationException("Unimplemented method 'orElse'");
-    }
+   
 }

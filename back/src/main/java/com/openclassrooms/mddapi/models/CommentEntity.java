@@ -4,13 +4,10 @@ import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,7 +31,6 @@ import lombok.experimental.Accessors;
  * the user who authored the comment, and timestamps for creation and last update.
  */
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "COMMENTS")
 @Data
 @Accessors(chain = true)
@@ -56,12 +52,10 @@ public class CommentEntity {
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id", nullable = false)
-    @JsonManagedReference
     private ArticleEntity article;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author", nullable = false)
-    @JsonManagedReference
     private UserEntity author;
     
     @CreatedDate

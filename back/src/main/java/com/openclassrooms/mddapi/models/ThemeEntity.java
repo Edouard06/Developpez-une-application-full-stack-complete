@@ -6,14 +6,11 @@ import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,7 +34,6 @@ import lombok.experimental.Accessors;
  * a list of articles and user subscriptions.
  */
 @Entity
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "THEMES")
 @Data
 @Accessors(chain = true)
@@ -70,11 +66,9 @@ public class ThemeEntity {
 
     @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
-    @JsonBackReference
     private Set<ArticleEntity> articles = new HashSet<>();
 
     @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @Builder.Default
-    @JsonBackReference
     private Set<SubscriptionEntity> subscriptions = new HashSet<>();
 }
